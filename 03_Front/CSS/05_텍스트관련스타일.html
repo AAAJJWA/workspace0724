@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>텍스트관련스타일</title>
+
+    <style>
+        ul{
+            display: flex; 
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>텍스트관련 스타일(text~)</h1>
+
+    <h2>color:  텍스트색상 지정</h2>
+    <pre>
+         선택자{
+            color: 색상명 | #16진수 코드값 #RRGGBB | rgb(r,g,b) | rgba(r,g,b,a)
+         }
+    </pre>
+
+    <h2>text-decoration</h2>
+    <pre>
+        선택자{
+            text-decoration: none | underline | overline | line-throuth ...
+        }
+    </pre>
+
+    <ul>
+        <li style="text-decoration: underline;">텍스트 영역 아래 줄 긋기</li>
+        <li style="text-decoration: line-through;">텍스트 영역 아래 취소선 긋기</li>
+        <li style="text-decoration: overline;">텍스트 영역 위에 줄 긋기</li>
+    </ul>
+
+    <a href="https://naver.com" target="_blank" style="text-decoration: none; color: black;">네이버로 이동</a>
+
+    <hr>
+
+    <h3>text-align : 텍스트를 정렬할 때 사용</h3>
+    <pre>
+        선택자{
+            text-align: left | right | center | justify
+        }
+    </pre>
+
+    <h4>기본정렬(왼쪽)</h4>
+    <p>
+        옆집하고 아랫집 비키니시티에서 사는 이터널리턴이라는 게임의
+        샬롯이라는 캐릭터에게서 유래된 밈이다
+        서포터 캐릭 주제에
+        내가 캐리 해주께!!!!!!!!!!!!!!!라면서 딜러 아이템을 다 쳐먹는 드립이 있었는데
+    </p>
+
+    <h4>양쪽정렬</h4>
+    <p style="text-align: justify;">
+        드립이지만 트롤러 인식을 만들게 되었던 밈이었고
+        그리고 이 두개가 합쳐져서
+        야!!!!!!김롭뿡!!!!!!!!!!!!!!하는 까씨츈이 만들어 지게 되었다
+        그리고 그 뒤로도 계속 밈의 바리레이션이 다양해지며
+    </p>
+
+    <h4>우측정렬</h4>
+    <p style="text-align: right;">
+        하루만 끼다리면 옵빠가 찝에와용!!!!!!!!!!
+        그래, 내갸 다시 똘아왔땨
+        쩬장!!!!! 김롭뿡!!! 이 공격은 때체 뭐야!!!!!!
+        야!!!!!!!! 김혈귀!!!!!!!!!!!!내가 권속 해주께!!!!!!!!!!!!!!!!!!!!!
+        넌...나의 김롭뿡...?!!!!
+    </p>
+
+    <h4>중앙정렬</h4>
+    <p style="text-align: center;">
+        문제는 잘 짜여진 스킬셋에도 불구하고
+        이상한곳에다가 합을 지정하거나
+        예열이 필요한 3스를 계속 첫턴부터 난사하고
+        합을 져버리는등 도움이 될때보다 도움이 안되는 일이 빈번했고
+    </p>
+
+    <hr>
+
+    <h3>line-height : 글자의 높이 -> 행간을 조절할 때 사용</h3>
+    <pre>
+        선택자{
+            line-height: normal | px | em | %
+        }
+    </pre>
+    <p style="line-height: 80px;">
+        쩬장!!!!! 김롭뿡!!! 이 공격은 때체 뭐야!!!!!!
+        야!!!!!!!! 김혈귀!!!!!!!!!!!!내가 권속 해주께!!!!!!!!!!!!!!!!!!!!!
+        넌...나의 김롭뿡...?!!!!
+    </p>
+
+    <ul>
+        <li>메뉴1</li>
+        <li>메뉴2</li>
+        <li>메뉴3</li>
+    </ul>
+</body>
+</html>
