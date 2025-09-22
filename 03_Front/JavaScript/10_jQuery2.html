@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        .qa-box > div{
+            width: 300px;
+            height: 30px;
+            background: rgb(144, 0, 201);
+            text-align: center;
+            line-height: 30px;
+            border: 1px solid rgb(97, 0, 201);
+            cursor: pointer;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .qa-box > p{
+            border: 1px solid rgb(97, 0, 201);
+            width: 300px;
+            height: 100px;
+            border-radius: 12px;
+            padding: 12px;
+            box-sizing: border-box;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>jQuery</h1>
+
+    <h3>jquery 이벤트</h3>
+
+    <input type="submit" value="완료">
+
+    <script>
+        // 1. $("선택자").이벤트(이벤트핸들러);
+        // $(":submit").mouseenter(function() {
+        //     $(this).val("제출하기");
+        // });
+
+        // $(":submit").mouseleave(function() {
+        //     $(this).val("완료");
+        // });
+
+        // hover(moseenter이벤트 핸들러, mouseleave 이벤트 핸들러)
+        $(":submit").hover(function() {
+            $(this).val("제출하기");
+        }, function() {
+            $(this).val("완료");
+        });
+    </script>
+
+    <hr>
+
+    <div class="area" id="wrap">
+        <h6>클릭시 h6 요소 추가</h6>
+    </div>
+
+    <script>
+        function addEvent() {
+            document. querySelectorAll("#wrap>h6");
+            for(let h3El of h6List) {
+                h3El.onclick = function() {
+                    let h6El = document.createElement('h6');    // <h6></h6>
+                    h6El.innerHTML = '클릭시 h6요소 추가';       // <h6>클릭시 h6 요소 추가</h6>
+                    // 특정요소.appendChild(요소) -> 특정요소에 맨 마지막 자식요소로 새로운 요소를 추가함
+                    document.querySelector("#wrap").appendChild(h6El);
+                }
+            }
+        }
+        // $("#wrap>h6").click(function() {
+        //     $("#wrap").append("<h6>클릭시 h6요소 추가</h6>");
+        // })
+
+        // document.querySelector("#wrap>h6").onclick = function() {
+        //     // js로 요소를 직접 생성
+        //     // document.createElement('생성할 요소');
+        //     let h6El = document.createElement('h6');    // <h6></h6>
+        //     h6El.innerHTML = '클릭시 h6요소 추가';       // <h6>클릭시 h6 요소 추가</h6>
+        //     // 특정요소.appendChild(요소) -> 특정요소에 맨 마지막 자식요소로 새로운 요소를 추가함
+        //     document.querySelector("#wrap").appendChild(h6El);
+
+        //     // document.querySelector("#wrap").innerHTML += "<h6>클릭시 h6 요소 추가</h6>";
+
+        //     // 문자열로 변환해서 합쳐주는 과정에서 모든 이벤트가 사라짐
+        // }
+
+        // jquery에서 동저긍로 이벤트를 부여하는 방법
+        // $(부모요소).on(이벤트명, 자식요소, 이벤트 핸들러) --> 자식요소에 동적으로 함수가 연결됨
+        $("#wrap").on("click", "h6", function() {
+            $("#wrap").appen("<h6>클릭시 h6 요소 추가</h6>");
+        });
+    </script>
+
+    <h2>시각적인 효과(Effect 메서드)</h2>
+    <p>페이지 내에 애니메이션 효과를 주기 위해 사용되는 메서드</p>
+
+    <h3>* show, hide, toggle</h3>
+    <p>선택된 요소가 점점 커지면서 보여지고, 점점 작아지면서 사라지게 만드는 메서드</p>
+
+    <button id="show-btn">보여주기</button>
+    <button id="hide-btn">숨기기</button>
+    <button id="toggle-btn">토글</button>
+
+    <br><br>
+    <img src="../images/sample.jpg" id="hide-show-img">
+
+    <script>
+        $("#show-btn").click(function() {
+            $("#hide-show-img").show(500);
+        });
+
+        $("#hide-btn").click(function() {
+            $("#hide-show-img").hide(1000);
+        });
+
+        $("#toggle-btn").click(function() {
+            $("#hide-show-img").toggle(1500);
+        });
+    </script>
+
+    <br><br>
+
+    <button id="fadeShow-btn">보여주기</button>
+    <button id="fadeHide-btn">숨기기</button>
+    <button id="fadeToggle-btn">토글</button>
+
+    <br><br>
+    <img src="../images/sample.jpg" id="fade-show-img">
+
+    <script>
+        $("#fadeShow-btn").click(function() {
+            $("#fade-show-img").show(500);
+        });
+
+        $("#fadeHide-btn").click(function() {
+            $("#fade-show-img").hide(1000);
+        });
+
+        $("#fadeToggle-btn").click(function() {
+            $("#fade-show-img").toggle(1500);
+        });
+    </script>
+
+    <h3>slideDown()과 slideUp()</h3>
+    <div class="qa-box">
+        <div>Q. 반품은 언제되나요?</div>
+        <p>A. 택배사에서 수거확인 후 2~7일 이내에 처리가 완료됩니다</p>
+
+        <div>Q. 반품은 언제되나요?</div>
+        <p>A. 택배사에서 수거확인 후 2~7일 이내에 처리가 완료됩니다</p>
+        
+        <div>Q. 반품은 언제되나요?</div>
+        <p>A. 택배사에서 수거확인 후 2~7일 이내에 처리가 완료됩니다</p>
+
+        <div>Q. 반품은 언제되나요?</div>
+        <p>A. 택배사에서 수거확인 후 2~7일 이내에 처리가 완료됩니다</p>
+
+        <div>Q. 반품은 언제되나요?</div>
+        <p>A. 택배사에서 수거확인 후 2~7일 이내에 처리가 완료됩니다</p>
+    </div>
+
+    <script>
+        $(".qa-box>div").click(function() {
+            console.log($(this).next());    // 선택된 요소의 뒤에 있는 요소
+
+            const $p = $(this).next();
+            if($p.css("display") === "none") {
+                $p.slideDown();
+            } else {
+                $p.slideUp();
+            }
+        })
+    </script>
+</body>
+</html>

@@ -113,13 +113,23 @@
         </div>
 
         <script>
-            var x = $("input[name='hobby']").eq(0).is(":checked");
-            var y = $("input[name='hobby']").eq(0).val();
+            var $x = $("input[name='hobby']").eq(0);
+            var $y = $("input[name='hobby']").eq(0).val();
+
+            $($x).change(function() {
+                if($x.isChecked == true) {
+
+                }
+            })
 
             console.log(x);
             console.log(y);
 
             $("input[name='hobby']").change({
+
+                // $("input[name='hobby']").each(function(idx, el) {
+                //      배열.each(function(인덱스, 요소){반복할 코드})
+                // })
 
             })
         </script>
