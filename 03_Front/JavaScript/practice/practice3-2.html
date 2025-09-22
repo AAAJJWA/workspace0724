@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        fieldset{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
+            gap: 20px;
+        }
+
+        legend{
+            text-align: center;
+        }
+
+        div{
+            background: lightgray;
+            width: 100%;
+            height: 70px;
+            margin-top: 15px;
+            padding: 10px;
+            display: none;
+        }
+
+        #title{
+            width: 80%;
+        }
+
+        button{
+            width: 40px;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>검색할 항목을 선택하세요.</legend>
+            <label><input type="radio" name="choice" value="title-area" onchange="checkRadio()">제목</label>
+            <label><input type="radio" name="choice" value="date-area" onchange="checkRadio()">날짜</label>
+            <label><input type="radio" name="choice" value="author-area" onchange="checkRadio()">작성자</label>
+        </fieldset>
+
+        <div id="title-area">
+            검색할 제목을 입력하세요: <br>
+            <input type="text" id="title">
+            <button>검색</button>
+        </div>
+
+        <div id="date-area">
+            검색할 날짜를 선택하세요 : <br>
+            <input type="date">
+            -
+            <input type="date">
+            <button>검색</button>
+
+        </div>
+
+        <div id="author-area">
+            검색할 작성자 아이디를 입력하세요 : <br>
+            <input type="text" id="author">
+            <button>검색</button>
+        </div>
+    </form>
+
+    <script>
+
+        function checkRadio() {
+            // let chkRadio = document.querySelectorAll("input[name='choice']");
+            const divs = document.querySelectorAll("div");
+
+            const selected = document.querySelector("input[name='choice']:checked");
+            const target = selected.value;
+
+            console.log(target);
+
+            // for(let i = 0; i < divs.length; i++) {
+            //     divs[i].style.display = "none";
+            // }
+
+            divs.forEach(div => div.style.display = "none");
+
+            document.getElementById(target).style.display = "block";
+
+            // if(chkRadio[0].checked) {
+            //     divs[0].style.display="block";
+            //     divs[1].style.display="none";
+            //     divs[2].style.display="none";
+            // } else if(chkRadio[1].checked) {
+            //     divs[0].style.display="none";
+            //     divs[1].style.display="block";
+            //     divs[2].style.display="none";
+            // } else if(chkRadio[2].checked) {
+            //     divs[0].style.display="none";
+            //     divs[1].style.display="none";
+            //     divs[2].style.display="block";
+            // }
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #main{
+            width: 100%;
+            height: 100%;
+            padding: 50px;
+            gap: 50px;
+            display: flex;
+        }
+
+        #left{
+            width: 40%;
+            height: 100%;
+        }
+
+        #right{
+            width: 40%;
+            height: 100%;
+            padding-top: 30px;
+        }
+
+        form{
+            display: flex;
+            gap: 5px;
+        }
+
+        input{
+            width: 100px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="left">
+            <h1>1. + 연산 시</h1>
+            <form>
+                <input type="number" name="numIndex">
+                <select name="calculate" id="plus"><option value="더하기">+</option></select>
+                <input type="number" name="numIndex">
+                <button type="button" name="calcbtn" id="plusbtn" onclick="calcBtn(event)">=</button>
+                <input type="text" class="answer" readonly>
+            </form>
+
+            <h1>2. - 연산 시</h1>
+            <form>
+                <input type="number" name="numIndex">
+                <select name="calculate" id="minus"><option value="빼기">-</option></select>
+                <input type="number" name="numIndex">
+                <button type="button" name="calcbtn" id="minusbtn" onclick="calcBtn(event)">=</button>
+                <input type="text" class="answer" readonly>
+            </form>
+
+            <h1>3. * 연산 시</h1>
+            <form>
+                <input type="number" name="numIndex">
+                <select name="calculate" id="mulitply"><option value="곱하기">*</option></select>
+                <input type="number" name="numIndex">
+                <button type="button" name="calcbtn" id="mulitplybtn" onclick="calcBtn(event)">=</button>
+                <input type="text" class="answer" id="multiply" readonly>
+            </form>
+        </div>
+
+        <div id="right">
+            <h1>4. / 연산 시</h1>
+            <form>
+                <input type="number" name="numIndex">
+                <select name="calculate" id="division"><option value="/">/</option></select>
+                <input type="number" name="numIndex">
+                <button type="button" name="calcbtn" id="divisionbtn" onclick="calcBtn(event)">=</button>
+                <input type="text" class="answer" readonly>
+            </form>
+
+            <h1>5. % 연산 시</h1>
+            <form>
+                <input type="number" name="numIndex">
+                <select name="calculate" id="division-left"><option value="나머지">%</option></select>
+                <input type="number" name="numIndex">
+                <button type="button" name="calcbtn" id="division-leftbtn" onclick="calcBtn(event)">=</button>
+                <input type="text" class="answer" readonly>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function calcBtn(e) {
+            const calcbtn = document.querySelectorAll("button[name=calcbtn]");
+            const num = document.querySelectorAll("input[name=numIndex]");
+            const answer = document.querySelectorAll("input[class=answer]");
+            const btn = e.target;
+
+            var sum = 0;
+
+            switch(btn.id) {
+                case calcbtn[0].id: 
+                    sum = parseInt(num[0].value) + parseInt(num[1].value);
+                    answer[0].value = sum;
+                    break;
+                case calcbtn[1].id:
+                    sum = parseInt(num[2].value) - parseInt(num[3].value);
+                    answer[1].value = sum;
+                    break;
+                case calcbtn[2].id:
+                    sum = parseInt(num[4].value) * parseInt(num[5].value);
+                    answer[2].value = sum;
+                    console.log(answer[2].id);
+                    console.log(btn.id);
+                    break;
+                case calcbtn[3].id:
+                    if(parseInt(num[7].value) == 0) {
+                        answer[3].style.background="red";
+                        answer[3].style.color="white";
+                        answer[3].value = "연산 불가";
+                        break;
+                    }
+                    sum = parseInt(num[6].value) / parseInt(num[7].value);
+                    answer[3].value = sum;
+                    console.log(answer[3].id);
+                    console.log(btn.id);
+                    break;
+                case calcbtn[4].id:
+                    if(parseInt(num[9].value) == 0) {
+                        answer[4].style.background="red";
+                        answer[4].style.color="white";
+                        answer[4].value = "연산 불가";
+                        break;
+                    }
+                    sum = parseInt(num[8].value) % parseInt(num[9].value);
+                    answer[4].value = sum;
+                    break;
+            }
+
+            // if(btn.id == calcbtn[0].id) {
+            //     sum = parseInt(num[0].value) + parseInt(num[1].value);
+            // } else if(btn.id == calcbtn[1].id) {
+            //     sum = parseInt(num[2].value) - parseInt(num[3].value);
+            // }
+
+            console.log(sum);
+        }
+    </script>
+</body>
+</html>

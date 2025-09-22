@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+        #others{
+            width: 250px;
+            height: 70px;
+            font-family: "Noto Sans KR", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        #printfText{
+            width: 70%;
+            height: 150px;
+            font-size: 17px;
+            font-family: "Noto Sans KR", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>구매 정보</legend>
+            <ul>
+                <li>구매자 : <input type="text" id="buyer" name="info" placeholder="구매자의 이름을 입력하세요"></li>
+                <li>상품명 : <input type="text" id="itemName" name="info" placeholder="구매 상품 명을 입력하세요"></li>
+                <li>가격 : <input type="text" id="price" name="info" placeholder="구매 가격을 입력하세요"></li>
+                <li>구매 수량 : <input type="number" id="itemCount" name="info" min="10" max="100" step="10" placeholder="최소 10"></li>
+                <li>납품 등급 : <input type="range" id="rating" name="info" min="1" max="9" step="2" value="1"></li>
+                <li>기타 사항 : <textarea id="others"></textarea></li>
+            </ul>
+        </fieldset>
+    </form>
+    <br>
+
+    <button type="button" id="print" onclick="printF()">입력 값 출력하기</button>
+
+    <br><br>
+
+    <textarea id="printfText" readonly></textarea>
+
+    <script>
+        // const buyer = document.getElementById("buyer");
+        // const itemName = document.getElementById("itemName");
+        // const price = document.getElementById("price");
+        // const itemCount = document.getElementById("itemCount");
+        // const rating = document.getElementById("rating");
+        // const others = document.getElementById("others")
+        const pText = document.getElementById("printfText");
+
+        function printF() {
+
+            const customerInfo = document.querySelectorAll("input[name='info']");
+            const otherInfo = document.querySelector("#others");
+
+            // pText.value =
+            //     "구매자 명 : " + buyer.value + "님" + "\n" +
+            //     "상품 명 : " + itemName.value + "\n" +
+            //     "가격 : " + price.value + "만원" + "\n" +
+            //     "구매 수량 : " + itemCount.value + "개" + "\n" +
+            //     "납품등급 : " + rating.value + "등급" + "\n" +
+            //     "기타사항 : " + others.value + "\n" 
+
+            pText.value = `구매자 명 : ${customerInfo[0].value}님
+            상품 명 : ${customerInfo[1].value}
+            가격 : ${customerInfo[2].value}만원
+            구매 수량 : ${customerInfo[3].value}개
+            납품등급 : ${customerInfo[4].value}등급
+            기타사항 : ${otherInfo.value}`.replace(/^\s+|\s+$/gm,'');
+        }
+
+        // Element.childern : 특정요소 내부에 있는 요소목록을 배열로 반환
+
+    </script>
+</body>
+</html>

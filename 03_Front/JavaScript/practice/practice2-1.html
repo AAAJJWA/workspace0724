@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
+
+    <style>
+        .area{
+            width: 100%;
+            min-height: 100px;
+        }
+
+        ul{
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        #area2{
+            border: 1px solid red;
+            height: 300px;
+
+        }
+    </style>
+</head>
+<body>
+    <div id="area1" class="area">
+        <fieldset>
+            <legend>취미</legend>
+            <table>
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" onchange="checkAll(this)">전체선택
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="종합" onchange="changeAllCheckBox()">종합
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="소설" onchange="changeAllCheckBox()">소설
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="시/에세이" onchange="changeAllCheckBox()">시/에세이
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="경제/경영" onchange="changeAllCheckBox()">경제/경영
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="자기계발" onchange="changeAllCheckBox()">자기계발
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="아동" onchange="changeAllCheckBox()">아동
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="여행" onchange="changeAllCheckBox()">여행
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="과학" onchange="changeAllCheckBox()">과학
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="역사/문화" onchange="changeAllCheckBox()">역사/문화
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="외국어" onchange="changeAllCheckBox()">외국어
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="hobby" value="컴퓨터" onchange="changeAllCheckBox()">컴퓨터
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                           <input type="checkbox" name="hobby" value="만화" onchange="changeAllCheckBox()">만화 
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br>
+        <button onclick="chkCategory()">카테고리 선택</button>
+        <div id="area2" class="area">
+
+        </div>
+
+        <script>
+            var x = $("input[name='hobby']").eq(0).is(":checked");
+            var y = $("input[name='hobby']").eq(0).val();
+
+            console.log(x);
+            console.log(y);
+
+            $("input[name='hobby']").change({
+
+            })
+        </script>
+
+        <!-- <script>
+            function checkAll(_allCheckBox) {
+                const isChecked = _allCheckBox.checked;
+                const checkbox = document.querySelectorAll("input[name=hobby]");
+
+                for(let i = 0; i < checkbox.length; i++) {
+                    checkbox[i].checked = isChecked;
+                }
+
+                // for(let i = 1; i < checkbox.length; i++) {
+                //     checkbox[i].checked = false;
+                //     if(checkbox[i].checked == false) {
+                //         checkbox[0].checked = false;
+                //     }
+                // }
+
+                // for(let i = 1; i < checkbox.length; i++) {
+                //     if(checkbox[i].checked == false) {
+                //         checkbox[0].checked = false;
+                //     }
+                // }
+
+                // let str1;
+                // str1 += "체크확인 : " + checkbox.checked;
+                
+            }
+
+            function changeAllCheckBox() {
+                    
+                const checkbox = document.querySelectorAll("input[name=hobby]");
+
+                for(let i = 1; i < checkbox.length; i++) {
+                    if(!checkbox[i].checked) {
+                        checkbox[0].checked = false;
+                        break;
+                    }
+                }
+
+            }
+
+            function chkCategory() {
+                const checkbox = document.querySelectorAll("input[name=hobby]");
+                const area2 = document.getElementById("area2");
+
+                area2.innerHTML = "";
+
+                for(let i = 1; i < checkbox.length; i++) {
+                    if(checkbox[i].checked == true) {
+                        area2.innerHTML += checkbox[i].value + " ";
+                    }
+                }
+            }
+        </script> -->
+    </div>
+</body>
+</html>
