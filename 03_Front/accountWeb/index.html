@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Web</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header>   
+            <h2>가계부</h2>
+            <p>현재 잔액</p>
+            <p id="cash">0원</p>
+        </header>
+
+        <div class="input-area">
+            <div>
+                <input type="text" id="price-info" placeholder="내용을 입력하세요 (예: 점심값, 월급)">
+                <input type="number" id="price" placeholder="금액을 입력하세요">
+            </div>
+
+            <div class="accBtns">
+                <button>수입</button>
+                <button>지출</button>
+            </div>
+
+            <button id="addBtn">추가하기</button>
+
+        </div>
+
+        <div class="filter-buttons">
+            <button data-fillter="all">전체</button>
+            <button data-fillter="income">수입</button>
+            <button data-fillter="expend">지출</button>
+        </div>
+
+        <div class="filter-data">
+            <div id="income">
+                <h4>총 수입</h4>
+                <p>0원</p>
+            </div>
+
+            <div id="expend">
+                <h4>총 지출</h4>
+                <p>0원</p>
+            </div>
+
+            <div id="balance">
+                <h4>잔액</h4>
+                <p>0원</p>
+            </div>
+        </div>
+
+        <ul class="footer">
+        </ul>
+
+        <!-- <div class="footer">
+            <div id="info">
+                <p id="date">년 월 일</p>
+                <p>급여</p>
+            </div>
+            <div id="cash-info">
+                수입 또는 지출
+                <button>삭제</button>
+            </div>
+        </div> -->
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
