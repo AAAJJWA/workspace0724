@@ -24,14 +24,15 @@
 
 let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
 let filterState = 'all';
+let selectedType = '';
 
 // DOM
-const pinfo = document.getElementById("price-info");
-const price = document.getElementById("price");
-const accBtns = document.querySelectorAll(".accBtns button");
-const filterBtns = document.querySelectorAll(".filter-buttons button");
-const addBtn = document.getElementById("addBtn");
-const footer = document.querySelector(".footer");
+const pinfo = document.getElementById("price-info");    // 내용 input
+const price = document.getElementById("price");     // 금액 input
+const accBtns = document.querySelectorAll(".accBtns button");   // 수입, 지출 버튼
+const filterBtns = document.querySelectorAll(".filter-buttons button"); // 필터 버튼들
+const addBtn = document.getElementById("addBtn");   // 추가하기 버튼
+const footer = document.querySelector(".footer");   // 수입, 지출 목록 ul
 
 // 초기화 함수
 function init() {
@@ -68,8 +69,6 @@ function addAccount() {
     saveAccounts()
     render();
 }
-
-let selectedType = '';
 
 function toggleClass() {
     accBtns.forEach(function(btn, index) {
@@ -201,4 +200,4 @@ function itemRender(account) {
 //     render();
 // } // 수정중
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', init);//////
