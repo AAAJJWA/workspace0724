@@ -36,16 +36,41 @@ const footer = document.querySelector(".footer");   // 수입, 지출 목록 ul
 
 // 초기화 함수
 function init() {
-    toggleClass();
+    bindEvent();    // 수정 추가
+    // toggleClass();
     render();
 }
 
 // 이벤트
 function bindEvent() {
+    addBtn.addEventListener('click', addAccount);
 
+    accBtns.forEach(function(btn, index) {
+        btn.addEventListener("click", function() {
+            accBtns.forEach(function(del) {
+                del.classList.remove('selected');
+            })
+
+            btn.classList.toggle('selected');
+
+            selectedType = (index === 0 ? "income" : "expend");
+        })
+    });
+
+    filterBtns.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            filterBtns.forEach(function(del) {
+                del.classList.remove('selected');
+            })
+
+            btn.classList.toggle('selected');
+            filterState = btn.dataset.filter;
+            render();
+        })
+    })
 }
 
-addBtn.addEventListener('click', addAccount);
+// addBtn.addEventListener('click', addAccount);
 
 function addAccount() {
     const text1 = pinfo.value.trim();
@@ -70,29 +95,31 @@ function addAccount() {
     render();
 }
 
-function toggleClass() {
-    accBtns.forEach(function(btn, index) {
-        btn.addEventListener("click", function() {
-            accBtns.forEach(function(del) {
-                del.classList.remove('selected');
-            })
+// function toggleClass() {
+//     accBtns.forEach(function(btn, index) {
+//         btn.addEventListener("click", function() {
+//             accBtns.forEach(function(del) {
+//                 del.classList.remove('selected');
+//             })
 
-            btn.classList.toggle('selected');
+//             btn.classList.toggle('selected');
 
-            selectedType = (index === 0 ? "income" : "expend");
-        })
-    });
+//             selectedType = (index === 0 ? "income" : "expend");
+//         })
+//     });
 
-    filterBtns.forEach(function(btn) {
-        btn.addEventListener("click", function() {
-            filterBtns.forEach(function(del) {
-                del.classList.remove('selected');
-            })
+//     filterBtns.forEach(function(btn) {
+//         btn.addEventListener("click", function() {
+//             filterBtns.forEach(function(del) {
+//                 del.classList.remove('selected');
+//             })
 
-            btn.classList.toggle('selected');
-        })
-    })
-}
+//             btn.classList.toggle('selected');
+//             filterState = btn.dataset.filter;
+//             render();
+//         })
+//     })
+// }
 
 function saveAccounts(){
     localStorage.setItem('accounts', JSON.stringify(accounts));
@@ -137,36 +164,51 @@ function updateAccountSum() {
     cash.textContent = `${totalBalance.toLocaleString()}원`;
 }
 
-// function getFilteredAccounts(){
-//     const filteredAccounts = [];
-//     if(filterState === 'income'){
-//         //미완료목록만 filteredTodos에 담김
-//         for(let account of accounts){
-//             if(account.type === 'income'){
-//                 filteredAccounts.push(account);
-//             }
-//         }
-//     } else if(filterState === 'expend'){
-//         //완료목록만 filteredTodos에 담김
-//         for(let account of accounts){
-//             if(account.type === 'expend'){
-//                 filteredAccounts.push(account);
-//             }
-//         }
-//     } else{
-//         return accounts;
-//     }
+function getFilteredAccounts() {
+    const filteredAccounts = [];
+    if(filterState === 'income'){
+        //미완료목록만 담김
+        for(let account of accounts){
+            if(account.type === 'income') {
+                filteredAccounts.push(account);
+            }
+        }
+    } else if(filterState === 'expend'){
+        //완료목록만 담김
+        for(let account of accounts){
+            if(account.type === 'expend') {
+                filteredAccounts.push(account);
+            }
+        }
+    } else{
+        return accounts;
+    }
 
-//     return filteredAccounts;
-// } // 수정중
+    return filteredAccounts;
+} // 수정중
 
 // 렌더링
 function render() {
     footer.innerHTML = "";
-    accounts.forEach(function(account) {
-        itemRender(account);
-    });
+
+    const filteredAccounts = getFilteredAccounts(); // 수정 추가
+
+    if(filteredAccounts.length === 0) { // 수정 추가
+        emptyFilterRender();
+    } else {
+        filteredAccounts.forEach(function(account) {
+            itemRender(account);
+        });
+    }
+
     updateAccountSum();
+}
+
+function emptyFilterRender(){   // 수정 추가
+   const emptyEl = document.createElement('div');
+    emptyEl.className = 'empty-state';
+    emptyEl.innerHTML = '항목이 없습니다.'
+    accounts.appendChild(emptyEl);
 }
 
 function itemRender(account) {
@@ -190,14 +232,14 @@ function itemRender(account) {
 }
 
 // 필터링
-// function setFilter(filter){
-//     filterState = filter; //전역상태에 필터상태를 변경
+function setFilter(filter){
+    filterState = filter; //전역상태에 필터상태를 변경
 
-//     filterBtns.forEach(function(btn){
-//         btn.className = (btn.dataset.filter === filter ? "active" : "");
-//     });
+    filterBtns.forEach(function(btn){
+        btn.className = (btn.dataset.filter === filter ? "active" : "");
+    });
 
-//     render();
-// } // 수정중
+    render();
+} // 수정중
 
 document.addEventListener('DOMContentLoaded', init);//////
