@@ -232,14 +232,14 @@ function itemRender(account) {
 }
 
 // 필터링
-function setFilter(filter){
-    filterState = filter; //전역상태에 필터상태를 변경
+// function setFilter(filter){
+//     filterState = filter; //전역상태에 필터상태를 변경
 
-    filterBtns.forEach(function(btn){
-        btn.className = (btn.dataset.filter === filter ? "active" : "");
-    });
+//     filterBtns.forEach(function(btn){
+//         btn.className = (btn.dataset.filter === filter ? "active" : "");
+//     });
 
-    render();
-} // 수정중
+//     render();
+// } // 필요 없는 부분
 
 document.addEventListener('DOMContentLoaded', init);//////
