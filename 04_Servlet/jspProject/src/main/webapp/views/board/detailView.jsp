@@ -133,7 +133,7 @@
 					<th>카테고리</th>
 					<td>${board.categoryName}</td>
 					<th>제목</th>
-					<td colspan="3"></td>
+					<td colspan="3">${board.boardTitle}</td>
 				</tr>
 				<tr>
 					<th>작성자</th>
@@ -159,7 +159,7 @@
 
 			<div class="button-group">
 				<a class="btn btn-primary" href="${pageContext.request.contextPath}/list.bo">목록가기</a>
-				<a class="btn btn-warning">수정하기</a>
+				<a class="btn btn-warning" href="${pageContext.request.contextPath}/updateForm.bo?bno=${board.boardNo}">수정하기</a>
 				<a class="btn btn-danger">삭제하기</a>
 			</div>
 		</div>

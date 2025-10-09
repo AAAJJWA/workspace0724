@@ -1,28 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>마이페이지</title>
-	
+	<title>게시글 수정</title>
+
 	<style>
-		.mypage-container {
+
+		.board-container {
 			max-width: 800px;
 			margin: 50px auto;
 			padding: 2rem;
 		}
 
-		.mypage-card {
+		.board-card {
 			background: white;
 			border-radius: 8px;
 			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 			padding: 2rem;
 		}
 
-		.mypage-card h2 {
+		.board-card h2 {
 			text-align: center;
 			color: #333;
 			margin-bottom: 2rem;
@@ -39,41 +39,38 @@
 			border-bottom: 1px solid #f0f0f0;
 		}
 
-		.form-table td {
-			padding: 1rem 0.5rem;
-		}
-
-		.form-table td:first-child {
-			width: 150px;
+		.form-table th {
+			width: 120px;
+			padding: 1rem;
 			font-weight: 500;
 			color: #555;
+			text-align: left;
+			vertical-align: top;
 		}
 
+		.form-table td {
+			padding: 1rem;
+		}
+
+		.form-table select,
 		.form-table input[type="text"],
-		.form-table input[type="password"] {
+		.form-table textarea,
+		.form-table input[type="file"] {
 			width: 100%;
 			padding: 0.5rem;
 			border: 1px solid #ddd;
 			border-radius: 4px;
 			font-size: 0.95rem;
+			font-family: "Noto Sans KR", sans-serif;
 		}
 
-		.form-table input[readonly] {
-			background-color: #f5f5f5;
-			cursor: not-allowed;
+		.form-table textarea {
+			resize: none;
 		}
 
-		.interest-group {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 1rem;
-		}
-
-		.interest-group label {
-			display: flex;
-			align-items: center;
-			gap: 0.3rem;
-			cursor: pointer;
+		.existing-file {
+			color: #555;
+			margin-bottom: 0.5rem;
 		}
 
 		.button-group {
@@ -86,142 +83,52 @@
 </head>
 <body>
 	<jsp:include page="/views/common/menubar.jsp" />
+	
+	<div class="board-container">
+		<div class="board-card">
+			<h2>일반게시글 수정하기</h2>
 
-	<div class="mypage-container">
-		<div class="mypage-card">
-			<h2>내 정보</h2>
-			<form action="" method="" id="update-form">
+			<form action="${pageContext.request.contextPath}/update.bo" method="post" >
 				<table class="form-table">
 					<tr>
-						<td>* 아이디</td>
-						<td><input type="text" name="userId" maxlength="15" readonly value=""></td>
-					</tr>
-					<tr>
-						<td>* 이름</td>
-						<td><input type="text" name="userName" maxlength="8" readonly value=""></td>
-					</tr>
-					<tr>
-						<td>전화번호</td>
-						<td><input type="text" name="phone" placeholder="- 포함해서 입력" value=""></td>
-					</tr>
-					<tr>
-						<td>이메일</td>
-						<td><input type="text" name="email" value=""></td>
-					</tr>
-					<tr>
-						<td>주소</td>
-						<td><input type="text" name="address" value=""></td>
-					</tr>
-					<tr>
-						<td>관심분야</td>
+						<th>카테고리</th>
 						<td>
-							<div class="interest-group">
-								<label>
-									<input type="checkbox" name="interest" value="sports" class="form-check-input">
-									운동
-								</label>
-								<label>
-									<input type="checkbox" name="interest" value="hiking" class="form-check-input">
-									등산
-								</label>
-								<label>
-									<input type="checkbox" name="interest" value="fishing" class="form-check-input">
-									낚시
-								</label>
-								<label>
-									<input type="checkbox" name="interest" value="cooking" class="form-check-input">
-									요리
-								</label>
-								<label>
-									<input type="checkbox" name="interest" value="gaming" class="form-check-input">
-									게임
-								</label>
-								<label>
-									<input type="checkbox" name="interest" value="movie" class="form-check-input">
-									영화
-								</label>
-								<label>
-									<input type="checkbox" name="interest" value="etc" class="form-check-input">
-									기타
-								</label>
-							</div>
+							<select name="category">
+								<option value="10" ${board.categoryNo == 10 ? 'selected' : ''}>공통</option>
+			                    <option value="20" ${board.categoryNo == 20 ? 'selected' : ''}>운동</option>
+			                    <option value="30" ${board.categoryNo == 30 ? 'selected' : ''}>등산</option>
+			                    <option value="40" ${board.categoryNo == 40 ? 'selected' : ''}>게임</option>
+			                    <option value="50" ${board.categoryNo == 50 ? 'selected' : ''}>낚시</option>
+			                    <option value="60" ${board.categoryNo == 60 ? 'selected' : ''}>요리</option>
+			                    <option value="70" ${board.categoryNo == 70 ? 'selected' : ''}>기타</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td>
+							<input type="text" name="title" required value="${board.boardTitle}">
+						</td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td>
+							<textarea name="content" rows="10">${board.boardContent}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th>첨부파일</th>
+						<td>
+							<input type="file" name="upfile">
 						</td>
 					</tr>
 				</table>
 
 				<div class="button-group">
-					<button type="submit" class="btn btn-success">정보수정</button>
-					<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#update-pwd-modal">비밀번호 변경</button>
-					<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-member-modal">회원탈퇴</button>
+					<button type="submit" class="btn btn-primary">수정하기</button>
+					<button type="reset" class="btn btn-secondary" onclick="history.back()">취소하기</button>
 				</div>
 			</form>
-		</div>
-	</div>
-
-
-	<!-- 비밀번호 변경 팝업 -->
-	<div class="modal fade" id="update-pwd-modal" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<!-- Modal Header -->
-				<div class="modal-header">
-					<h5 class="modal-title">비밀번호 변경</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-
-				<!-- Modal body -->
-				<div class="modal-body">
-					<form action="" method="">
-						<div class="mb-3">
-							<label for="currentPwd" class="form-label">현재 비밀번호</label>
-							<input type="password" class="form-control" id="currentPwd" name="userPwd" required>
-						</div>
-						<div class="mb-3">
-							<label for="newPwd" class="form-label">변경할 비밀번호</label>
-							<input type="password" class="form-control" id="newPwd" name="updatePwd" required>
-						</div>
-						<div class="mb-3">
-							<label for="checkPwd" class="form-label">변경할 비밀번호 확인</label>
-							<input type="password" class="form-control" id="checkPwd" name="checkPwd" required>
-						</div>
-						<div class="d-grid">
-							<button id="edit-pwd-btn" type="submit" class="btn btn-primary">비밀번호 변경</button>
-						</div>
-					</form>
-
-			
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- 탈퇴 팝업 -->
-	<div class="modal fade" id="delete-member-modal" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<!-- Modal Header -->
-				<div class="modal-header">
-					<h5 class="modal-title">회원탈퇴</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-
-				<!-- Modal body -->
-				<div class="modal-body">
-					<form action="" method="">
-						<div class="alert alert-warning" role="alert">
-							<strong>경고:</strong> 탈퇴 후 복구가 불가능합니다.<br>
-							정말로 탈퇴하시겠습니까?
-						</div>
-						<div class="mb-3">
-							<label for="deletePwd" class="form-label">비밀번호</label>
-							<input type="password" class="form-control" id="deletePwd" name="userPwd" required>
-						</div>
-						<div class="d-grid">
-							<button type="submit" class="btn btn-danger">탈퇴하기</button>
-						</div>
-					</form>
-				</div>
-			</div>
 		</div>
 	</div>
 </body>

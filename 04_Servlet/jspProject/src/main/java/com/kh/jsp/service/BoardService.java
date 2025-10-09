@@ -41,4 +41,13 @@ public class BoardService {
         return b;
     }
 
+	public int updateBoard(Board b) {
+	    Connection conn = getConnection();
+	    int result = new BoardDao().updateBoard(conn, b);
+	    if(result > 0) commit(conn);
+	    else rollback(conn);
+	    close(conn);
+	    return result;
+	}
+	
 }
