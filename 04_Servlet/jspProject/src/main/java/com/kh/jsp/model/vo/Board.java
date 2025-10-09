@@ -4,24 +4,19 @@ import java.sql.Date;
 
 public class Board {
     
-    private int boardNo;         // 게시글 번호
-    private int boardType;       // 게시판 타입 (1: 일반, 2: 사진)
-    private int categoryNo;      // 카테고리 번호 (CATEGORY 테이블 참조)
-    private String boardTitle;   // 게시글 제목
-    private String boardContent; // 게시글 내용
-    private int boardWriter;     // 작성자 회원번호 (MEMBER 참조)
-    private int count;           // 조회수
-    private Date createDate;     // 작성일
-    private String status;       // 상태값 (Y/N)
-
-    // --------------------------------
-    // 기본 생성자
-    // --------------------------------
+    private int boardNo;
+    private int boardType;
+    private int categoryNo;
+    private String boardTitle;
+    private String boardContent;
+    private int boardWriter;
+    private int count;
+    private Date createDate;
+    private String status;
+    private String categoryName;
+    
     public Board() {}
 
-    // --------------------------------
-    // 전체 필드 생성자
-    // --------------------------------
     public Board(int boardNo, int boardType, int categoryNo, String boardTitle, String boardContent,
                  int boardWriter, int count, Date createDate, String status) {
         super();
@@ -35,10 +30,22 @@ public class Board {
         this.createDate = createDate;
         this.status = status;
     }
+    
+    public Board(int boardNo, int boardType, int categoryNo, String categoryName, String boardTitle, String boardContent,
+            int boardWriter, int count, Date createDate, String status) {
+	   super();
+	   this.boardNo = boardNo;
+	   this.boardType = boardType;
+	   this.categoryNo = categoryNo;
+	   this.categoryName = categoryName;
+	   this.boardTitle = boardTitle;
+	   this.boardContent = boardContent;
+	   this.boardWriter = boardWriter;
+	   this.count = count;
+	   this.createDate = createDate;
+	   this.status = status;
+    }
 
-    // --------------------------------
-    // Getter & Setter
-    // --------------------------------
     public int getBoardNo() {
         return boardNo;
     }
@@ -63,6 +70,14 @@ public class Board {
         this.categoryNo = categoryNo;
     }
 
+    public String getCategoryName() {
+    	return categoryName;
+    }
+    
+    public void setCategoryName(String categoryName) {
+    	this.categoryName = categoryName;
+    }
+    
     public String getBoardTitle() {
         return boardTitle;
     }
@@ -111,9 +126,6 @@ public class Board {
         this.status = status;
     }
 
-    // --------------------------------
-    // toString() - 디버깅용
-    // --------------------------------
     @Override
     public String toString() {
         return "Board [boardNo=" + boardNo 
