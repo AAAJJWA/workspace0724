@@ -82,12 +82,19 @@
 		<div class="board-card">
 			<h2>일반게시글 작성하기</h2>
 
-			<form action="" method="" >
+			<form action="${pageContext.request.contextPath}/insertBoard.bo" method="post" >
 				<table class="form-table">
 					<tr>
 						<th>카테고리</th>
 						<td>
-							<select name="category">						
+							<select name="category">	
+								<option value="10">공통</option>
+					            <option value="20">운동</option>
+					            <option value="30">등산</option>
+					            <option value="40">게임</option>
+					            <option value="50">낚시</option>
+					            <option value="60">요리</option>
+					            <option value="70">기타</option>		
 							</select>
 						</td>
 					</tr>
@@ -113,7 +120,7 @@
 
 				<div class="button-group">
 					<button type="submit" class="btn btn-primary">작성하기</button>
-					<button type="reset" class="btn btn-secondary">취소하기</button>
+					<button type="reset" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/list.bo'">취소하기</button>
 				</div>
 			</form>
 		</div>

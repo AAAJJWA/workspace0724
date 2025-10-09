@@ -104,6 +104,24 @@
                     </tr>
                 </thead>
                 <tbody>
+                	<c:forEach var="b" items="${list}">
+                		<tr onclick="location.href='${pageContext.request.contextPath}/detail.bo?bno=${b.boardNo}'">
+                            <td>${b.boardNo}</td>
+                            <td>${b.categoryNo}</td>
+                            <td>${b.boardTitle}</td>
+                            <td>${b.boardWriter}</td>
+                            <td>${b.count}</td>
+                            <td>${b.createDate}</td>
+                        </tr>
+                	</c:forEach>
+                	
+                	<c:if test="${empty list}">
+                        <tr>
+                            <td colspan="6">등록된 게시글이 없습니다.</td>
+                        </tr>
+                    </c:if>
+                    
+                    <!-- 
                     <tr>
                         <td>1</td>
                         <td>운동</td>
@@ -120,6 +138,9 @@
                         <td>13</td>
                         <td>2025-01-08</td>
                     </tr>
+                    -->
+                    
+                    
                 </tbody>
             </table>
 
