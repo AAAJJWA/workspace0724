@@ -139,7 +139,7 @@
 					<th>작성자</th>
 					<td>${board.writerId}</td>
 					<th>작성일</th>
-					<td></td>
+					<td>${board.createDate}</td>
 				</tr>
 				<tr>
 					<th>내용</th>
@@ -160,7 +160,7 @@
 			<div class="button-group">
 				<a class="btn btn-primary" href="${pageContext.request.contextPath}/list.bo">목록가기</a>
 				<a class="btn btn-warning" href="${pageContext.request.contextPath}/updateForm.bo?bno=${board.boardNo}">수정하기</a>
-				<a class="btn btn-danger">삭제하기</a>
+				<a class="btn btn-danger" href="${pageContext.request.contextPath}/deleteForm.bo?bno=${board.boardNo}">삭제하기</a>
 			</div>
 		</div>
 
