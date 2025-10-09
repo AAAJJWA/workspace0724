@@ -14,6 +14,7 @@ public class Board {
     private Date createDate;
     private String status;
     private String categoryName;
+    private String writerId;
     
     public Board() {}
 
@@ -124,6 +125,14 @@ public class Board {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    public String getWriterId() {
+        return writerId;
+    }
+    
+    public void setWriterId(String writerId) {
+        this.writerId = writerId;
     }
 
     @Override

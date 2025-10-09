@@ -107,9 +107,21 @@
                 	<c:forEach var="b" items="${list}">
                 		<tr onclick="location.href='${pageContext.request.contextPath}/detail.bo?bno=${b.boardNo}'">
                             <td>${b.boardNo}</td>
-                            <td>${b.categoryNo}</td>
+                            <td>
+                            	<!-- ${b.categoryNo} -->
+                            	<c:choose>
+					                <c:when test="${b.categoryNo == 10}">공통</c:when>
+					                <c:when test="${b.categoryNo == 20}">운동</c:when>
+					                <c:when test="${b.categoryNo == 30}">등산</c:when>
+					                <c:when test="${b.categoryNo == 40}">게임</c:when>
+					                <c:when test="${b.categoryNo == 50}">낚시</c:when>
+					                <c:when test="${b.categoryNo == 60}">요리</c:when>
+					                <c:when test="${b.categoryNo == 70}">기타</c:when>
+					                <c:otherwise>미지정</c:otherwise>
+					            </c:choose>
+                            </td>
                             <td>${b.boardTitle}</td>
-                            <td>${b.boardWriter}</td>
+                            <td>${b.writerId}</td>
                             <td>${b.count}</td>
                             <td>${b.createDate}</td>
                         </tr>
@@ -119,27 +131,7 @@
                         <tr>
                             <td colspan="6">등록된 게시글이 없습니다.</td>
                         </tr>
-                    </c:if>
-                    
-                    <!-- 
-                    <tr>
-                        <td>1</td>
-                        <td>운동</td>
-                        <td>안녕하세요.</td>
-                        <td>user01</td>
-                        <td>123</td>
-                        <td>2025-03-12</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>기타</td>
-                        <td>문의 남깁니다.</td>
-                        <td>user02</td>
-                        <td>13</td>
-                        <td>2025-01-08</td>
-                    </tr>
-                    -->
-                    
+                    </c:if>                 
                     
                 </tbody>
             </table>
