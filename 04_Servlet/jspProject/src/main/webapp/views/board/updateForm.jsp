@@ -89,6 +89,7 @@
 			<h2>일반게시글 수정하기</h2>
 
 			<form action="${pageContext.request.contextPath}/update.bo" method="post" >
+				<input type="hidden" name="boardNo" value="${board.boardNo}">
 				<table class="form-table">
 					<tr>
 						<th>카테고리</th>

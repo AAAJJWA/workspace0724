@@ -91,6 +91,12 @@ public class InsertController extends HttpServlet {
 
 	    Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 	    int writerNo = (loginMember != null) ? loginMember.getMemberNo() : 1;
+	    
+	    if (loginMember == null) {
+	    	request.setAttribute("errorMsg", "로그인 후 이용 가능합니다.");
+            request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+	        return;
+	    }
 
 	    Board b = Board.createInsertBoard(categoryNo, title, content, writerNo);
 	    

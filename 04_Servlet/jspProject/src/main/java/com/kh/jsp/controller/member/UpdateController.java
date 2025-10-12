@@ -83,11 +83,19 @@ public class UpdateController extends HttpServlet {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		
-		Board updateBoard = Board.createUpdateBoard(boardNo, categoryNo, title, content);
+		Board b = Board.createUpdateBoard(boardNo, categoryNo, title, content);
 		
-		updateBoard = new BoardService().updateBoard(updateBoard);
+		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+		
+		if (loginMember == null) {
+	    	request.setAttribute("errorMsg", "로그인 후 이용 가능합니다.");
+            request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+	        return;
+	    }
+		
+		b = new BoardService().updateBoard(b);
 
-		if (updateBoard == null) {
+		if (b == null) {
 			request.setAttribute("errorMsg", "게시글 수정에 실패했습니다.");
 			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
 		} else {
