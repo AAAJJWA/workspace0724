@@ -170,4 +170,56 @@ public class BoardDao {
 	    }
 	    return result;
 	}
+	
+	public int insertAttachment(Connection conn, Board b) {
+	    int result = 0;
+	    PreparedStatement pstmt = null;
+	    String sql = "INSERT INTO ATTACHMENT "
+	               + "("
+	               + "FILE_NO, "
+	               + "REF_BNO, "
+	               + "ORIGIN_NAME, "
+	               + "CHANGE_NAME, "
+	               + "FILE_PATH, "
+	               + "FILE_LEVEL"
+	               + ") "
+	               + "VALUES "
+	               + "("
+	               + "SEQ_FNO.NEXTVAL, "
+	               + "?, "
+	               + "?, "
+	               + "?, "
+	               + "?, "
+	               + "?"
+	               + ")";
+
+	    try {
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, b.getBoardNo());
+	        pstmt.setString(2, b.getOriginName());
+	        pstmt.setString(3, b.getChangeName());
+	        pstmt.setString(4, b.getFilePath());
+	        pstmt.setInt(5, b.getFileLevel());
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(pstmt);
+	    }
+	    return result;
+	}
+	
+	public int selectBoardNo(Connection conn) {
+	    int boardNo = 0;
+	    String sql = "SELECT SEQ_BNO.CURRVAL FROM DUAL";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rset = pstmt.executeQuery()) {
+	        if (rset.next()) {
+	            boardNo = rset.getInt(1);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return boardNo;
+	}
 }

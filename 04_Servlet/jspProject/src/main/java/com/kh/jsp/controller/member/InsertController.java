@@ -1,6 +1,7 @@
 package com.kh.jsp.controller.member;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,10 @@ import com.kh.jsp.service.MemberService;
 /**
  * Servlet implementation class InsertController
  */
+@MultipartConfig(
+		maxFileSize = 1024 * 1024 * 10,
+		maxRequestSize = 1024 * 1024 * 50
+)
 @WebServlet(urlPatterns = {"/insert.me", "/insertBoard.bo"})
 public class InsertController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -75,6 +80,11 @@ public class InsertController extends HttpServlet {
 	private void insertBoard(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		
+		String savePath = request.getServletContext().getRealPath("/resources/uploadFiles/");
+		
+		java.io.File uploadDir = new java.io.File(savePath);
+	    if (!uploadDir.exists()) uploadDir.mkdirs();
+		
 		int categoryNo = Integer.parseInt(request.getParameter("category"));
 	    String title = request.getParameter("title");
 	    String content = request.getParameter("content");
@@ -83,6 +93,23 @@ public class InsertController extends HttpServlet {
 	    int writerNo = (loginMember != null) ? loginMember.getMemberNo() : 1;
 
 	    Board b = Board.createInsertBoard(categoryNo, title, content, writerNo);
+	    
+	    jakarta.servlet.http.Part filePart = request.getPart("upfile");
+	    if (filePart != null && filePart.getSize() > 0) {
+	    	
+	    	String originName = filePart.getSubmittedFileName();
+	    	
+	    	String currentTime = new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
+	        String ext = originName.substring(originName.lastIndexOf("."));
+	        String changeName = currentTime + ext;
+	        
+	        filePart.write(savePath + changeName);
+	        
+	        b.setOriginName(originName);
+	        b.setChangeName(changeName);
+	        b.setFilePath("/resources/uploadFiles/");
+	    	
+	    }
         
         int result = new BoardService().insertBoard(b);
         

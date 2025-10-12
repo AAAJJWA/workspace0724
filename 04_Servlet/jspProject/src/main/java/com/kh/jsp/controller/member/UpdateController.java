@@ -83,7 +83,7 @@ public class UpdateController extends HttpServlet {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		
-		Board updateBoard = Board.updateCreateBoard(boardNo, categoryNo, title, content);
+		Board updateBoard = Board.createUpdateBoard(boardNo, categoryNo, title, content);
 		
 		updateBoard = new BoardService().updateBoard(updateBoard);
 

@@ -21,16 +21,25 @@ public class BoardService {
 	
 	public int insertBoard(Board b) {
         Connection conn = getConnection();
-        int result = new BoardDao().insertBoard(conn, b);
+        int result1 = new BoardDao().insertBoard(conn, b);
         
-        if(result > 0) {
+        int result2 = 1;
+        
+        if (result1 > 0 && b.getOriginName() != null) {
+            int boardNo = new BoardDao().selectBoardNo(conn);
+            b.setBoardNo(boardNo);
+            result2 = new BoardDao().insertAttachment(conn, b);
+        }
+        
+        
+        if(result1 > 0 && result2 > 0) {
         	commit(conn);
         } else { 
         	rollback(conn);
         }
         
         close(conn);
-        return result;
+        return (result1 * result2);
     }
 	
 	public Board selectBoard(int boardNo) {

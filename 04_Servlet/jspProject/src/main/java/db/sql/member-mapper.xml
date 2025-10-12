@@ -14,7 +14,7 @@
 			INTEREST
 		)
 		VALUES(
-			SEQ_MNO.NEXTVAL, 
+			SEQ_NNO.NEXTVAL, 
 			?, 
 			?, 
 			?, 

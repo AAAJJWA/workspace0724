@@ -26,6 +26,14 @@ public class Board {
     private String status;
     private String categoryName;
     private String writerId;
+    
+    private int fileNo;
+    private String originName;
+    private String changeName;
+    private String filePath;
+    private Date uploadDate;
+    private int fileLevel;
+    private String fileStatus;
 
     public static Board createInsertBoard(int categoryNo, String title, String content, int writerNo) {
         Board b = new Board();
@@ -38,7 +46,7 @@ public class Board {
         return b;
     }
     
-    public static Board updateCreateBoard(int boardNo, int categoryNo, String title, String content) {
+    public static Board createUpdateBoard(int boardNo, int categoryNo, String title, String content) {
         Board b = new Board();
         b.setBoardNo(boardNo);       
         b.setCategoryNo(categoryNo); 
