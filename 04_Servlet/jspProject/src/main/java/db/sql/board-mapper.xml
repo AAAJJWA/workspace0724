@@ -15,4 +15,4 @@
     FROM BOARD
     WHERE STATUS = 'Y'
     ORDER BY BOARD_NO DESC
-  </entry>
+</entry>

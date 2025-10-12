@@ -76,18 +76,13 @@ public class InsertController extends HttpServlet {
             throws ServletException, IOException {
 		
 		int categoryNo = Integer.parseInt(request.getParameter("category"));
-        String title   = request.getParameter("title");
-        String content = request.getParameter("content");
-		
-        Member loginMember = (Member) request.getSession().getAttribute("loginMember");
-        int writerNo = (loginMember != null) ? loginMember.getMemberNo() : 1;
-        
-        Board b = new Board();
-        b.setBoardType(1); // 일반게시판
-        b.setCategoryNo(categoryNo);
-        b.setBoardTitle(title);
-        b.setBoardContent(content);
-        b.setBoardWriter(writerNo);
+	    String title = request.getParameter("title");
+	    String content = request.getParameter("content");
+
+	    Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+	    int writerNo = (loginMember != null) ? loginMember.getMemberNo() : 1;
+
+	    Board b = Board.createInsertBoard(categoryNo, title, content, writerNo);
         
         int result = new BoardService().insertBoard(b);
         

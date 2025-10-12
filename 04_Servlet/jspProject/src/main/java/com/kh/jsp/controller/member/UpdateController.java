@@ -48,16 +48,8 @@ public class UpdateController extends HttpServlet {
 	
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
-	private void updateMember(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	private void updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String userId = request.getParameter("userId");
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
@@ -84,30 +76,31 @@ public class UpdateController extends HttpServlet {
 		}
 	}
 	
-	private void updateBoard(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		request.setCharacterEncoding("UTF-8");
+	private void updateBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 		int categoryNo = Integer.parseInt(request.getParameter("category"));
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
+		
+		Board updateBoard = Board.updateCreateBoard(boardNo, categoryNo, title, content);
+		
+		updateBoard = new BoardService().updateBoard(updateBoard);
 
-		Board b = new Board();
-		b.setBoardNo(boardNo);
-		b.setCategoryNo(categoryNo);
-		b.setBoardTitle(title);
-		b.setBoardContent(content);
-
-		int result = new BoardService().updateBoard(b);
-
-		if (result > 0) {
-			request.getSession().setAttribute("alertMsg", "게시글이 수정되었습니다.");
-			response.sendRedirect(request.getContextPath() + "/detail.bo?bno=" + boardNo);
-		} else {
+		if (updateBoard == null) {
 			request.setAttribute("errorMsg", "게시글 수정에 실패했습니다.");
 			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+		} else {
+			request.getSession().setAttribute("alertMsg", "게시글이 수정되었습니다.");
+			response.sendRedirect(request.getContextPath() + "/detail.bo?bno=" + boardNo);
 		}
+	}
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 }
