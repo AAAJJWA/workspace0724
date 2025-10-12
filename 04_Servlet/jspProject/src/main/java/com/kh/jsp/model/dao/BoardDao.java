@@ -102,6 +102,7 @@ public class BoardDao {
 	    		   + "C.CATEGORY_NAME, "
 	               + "B.BOARD_TITLE, "
 	               + "B.BOARD_CONTENT, "
+	               + "B.BOARD_WRITER AS BOARD_WRITER_NO, "
 	               + "M.MEMBER_ID AS BOARD_WRITER, "
 	               + "B.COUNT, "
 	               + "B.CREATE_DATE, "
@@ -129,6 +130,7 @@ public class BoardDao {
 	            b.setCategoryName(rset.getString("CATEGORY_NAME"));
 	            b.setBoardTitle(rset.getString("BOARD_TITLE"));
 	            b.setBoardContent(rset.getString("BOARD_CONTENT"));
+	            b.setBoardWriter(rset.getInt("BOARD_WRITER_NO"));
 	            b.setWriterId(rset.getString("BOARD_WRITER"));
 	            b.setCount(rset.getInt("COUNT"));
 	            b.setCreateDate(rset.getDate("CREATE_DATE"));

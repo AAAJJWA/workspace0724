@@ -84,6 +84,7 @@ public class UpdateController extends HttpServlet {
 		String content = request.getParameter("content");
 		
 		Board b = Board.createUpdateBoard(boardNo, categoryNo, title, content);
+		HttpSession session = request.getSession();
 		
 		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 		
@@ -93,13 +94,21 @@ public class UpdateController extends HttpServlet {
 	        return;
 	    }
 		
+		Board board = new BoardService().selectBoard(boardNo);
+		
+		if (loginMember.getMemberNo() != board.getBoardWriter()) {
+            session.setAttribute("alertMsg", "작성자만 수정할 수 있습니다.");
+            response.sendRedirect(request.getContextPath() + "/detail.bo?bno=" + boardNo);
+            return;
+        }
+		
 		b = new BoardService().updateBoard(b);
 
 		if (b == null) {
 			request.setAttribute("errorMsg", "게시글 수정에 실패했습니다.");
 			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
 		} else {
-			request.getSession().setAttribute("alertMsg", "게시글이 수정되었습니다.");
+			session.setAttribute("alertMsg", "게시글이 수정되었습니다.");
 			response.sendRedirect(request.getContextPath() + "/detail.bo?bno=" + boardNo);
 		}
 	}

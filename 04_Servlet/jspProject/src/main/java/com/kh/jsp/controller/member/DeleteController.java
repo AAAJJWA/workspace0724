@@ -2,6 +2,7 @@ package com.kh.jsp.controller.member;
 
 import java.io.IOException;
 
+import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Member;
 import com.kh.jsp.service.BoardService;
 import com.kh.jsp.service.MemberService;
@@ -74,10 +75,20 @@ public class DeleteController extends HttpServlet {
 
         int boardNo = Integer.parseInt(request.getParameter("bno"));
         HttpSession session = request.getSession();
+        
+        Member loginMember = (Member) session.getAttribute("loginMember");
 
-        if (session.getAttribute("loginMember") == null) {
+        if (loginMember == null) {
             request.setAttribute("errorMsg", "로그인 후 이용 가능합니다.");
             request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+            return;
+        }
+        
+        Board board = new BoardService().selectBoard(boardNo);
+        
+        if (loginMember.getMemberNo() != board.getBoardWriter()) {
+            session.setAttribute("alertMsg", "작성자만 삭제할 수 있습니다.");
+            response.sendRedirect(request.getContextPath() + "/detail.bo?bno=" + boardNo);
             return;
         }
 
