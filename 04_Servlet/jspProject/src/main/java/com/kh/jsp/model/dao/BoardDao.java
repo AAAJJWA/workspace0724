@@ -104,10 +104,17 @@ public class BoardDao {
 	               + "B.BOARD_CONTENT, "
 	               + "M.MEMBER_ID AS BOARD_WRITER, "
 	               + "B.COUNT, "
-	               + "B.CREATE_DATE "
+	               + "B.CREATE_DATE, "
+	               + "A.FILE_NO, "
+	               + "A.ORIGIN_NAME, "
+	               + "A.CHANGE_NAME, "
+	               + "A.FILE_PATH, "
+	               + "A.UPLOAD_DATE, "
+	               + "A.FILE_LEVEL "
 	               + "FROM BOARD B "
 	               + "JOIN MEMBER M ON (B.BOARD_WRITER = M.MEMBER_NO) "
 	               + "JOIN CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO) "
+	               + "LEFT JOIN ATTACHMENT A ON (B.BOARD_NO = A.REF_BNO AND A.STATUS = 'Y') "
 	               + "WHERE B.BOARD_NO = ? AND B.STATUS = 'Y'";
 	    try {
 	        pstmt = conn.prepareStatement(sql);
@@ -125,6 +132,13 @@ public class BoardDao {
 	            b.setWriterId(rset.getString("BOARD_WRITER"));
 	            b.setCount(rset.getInt("COUNT"));
 	            b.setCreateDate(rset.getDate("CREATE_DATE"));
+	            
+	            b.setFileNo(rset.getInt("FILE_NO"));
+	            b.setOriginName(rset.getString("ORIGIN_NAME"));
+	            b.setChangeName(rset.getString("CHANGE_NAME"));
+	            b.setFilePath(rset.getString("FILE_PATH"));
+	            b.setUploadDate(rset.getDate("UPLOAD_DATE"));
+	            b.setFileLevel(rset.getInt("FILE_LEVEL"));
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -222,4 +236,5 @@ public class BoardDao {
 	    }
 	    return boardNo;
 	}
+	
 }

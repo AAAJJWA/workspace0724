@@ -152,7 +152,17 @@
 				<tr>
 					<th>첨부파일</th>
 					<td colspan="3">
-						첨부파일이 없습니다.
+						<c:choose>
+					      <c:when test="${not empty board.originName}">
+					        <a href="${pageContext.request.contextPath}/resources/uploadFiles/${board.changeName}"
+					           download="${board.originName}">
+					           ${board.originName}
+					        </a>
+					      </c:when>
+					      <c:otherwise>
+					        첨부파일이 없습니다.
+					      </c:otherwise>
+					    </c:choose>
 					</td>
 				</tr>
 			</table>
