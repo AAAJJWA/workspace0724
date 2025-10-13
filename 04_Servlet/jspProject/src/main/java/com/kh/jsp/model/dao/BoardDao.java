@@ -2,30 +2,38 @@ package com.kh.jsp.model.dao;
 
 import static com.kh.jsp.common.JDBCTemplate.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 
+import com.kh.jsp.common.JDBCTemplate;
 import com.kh.jsp.model.vo.Board;
 
 public class BoardDao {
 	
+	private Properties prop = new Properties();
+	
+	public BoardDao() {
+		super();
+		
+		String path = JDBCTemplate.class.getResource("/db/sql/board-mapper.xml").getPath();
+		
+		try {
+			prop.loadFromXML(new FileInputStream(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public int insertBoard(Connection conn, Board b) {
         int result = 0;
         PreparedStatement pstmt = null;
-        String sql = "INSERT INTO BOARD "
-                   + "(BOARD_NO, "
-                   + "BOARD_TYPE, "
-                   + "CATEGORY_NO, "
-                   + "BOARD_TITLE, "
-                   + "BOARD_CONTENT, "
-                   + "BOARD_WRITER, "
-                   + "COUNT, "
-                   + "CREATE_DATE, "
-                   + "STATUS) "
-                   + "VALUES (SEQ_BNO.NEXTVAL, ?, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT)";
+        String sql = prop.getProperty("insertBoard");
 
         try {
             pstmt = conn.prepareStatement(sql);
@@ -50,20 +58,7 @@ public class BoardDao {
         PreparedStatement pstmt = null;
         ResultSet rset = null;
 
-        String sql = "SELECT "
-        		   + "B.BOARD_NO, "
-        		   + "B.BOARD_TYPE, "
-        		   + "B.CATEGORY_NO, "
-                   + "B.BOARD_TITLE, "
-                   + "B.BOARD_CONTENT, "
-                   + "M.MEMBER_ID AS WRITER_ID, "
-                   + "B.COUNT, "
-                   + "B.CREATE_DATE, "
-                   + "B.STATUS "
-                   + "FROM BOARD B "
-                   + "JOIN MEMBER M ON (B.BOARD_WRITER = M.MEMBER_NO) "
-                   + "WHERE B.STATUS = 'Y' "
-                   + "ORDER BY B.BOARD_NO DESC";
+        String sql = prop.getProperty("selectList");
 
         try {
             pstmt = conn.prepareStatement(sql);
@@ -73,6 +68,7 @@ public class BoardDao {
                 Board b = new Board();
                 b.setBoardNo(rset.getInt("BOARD_NO"));
                 b.setCategoryNo(rset.getInt("CATEGORY_NO"));
+                b.setCategoryName(rset.getString("CATEGORY_NAME"));
                 b.setBoardTitle(rset.getString("BOARD_TITLE"));
                 b.setWriterId(rset.getString("WRITER_ID"));
                 b.setCount(rset.getInt("COUNT"));
@@ -95,28 +91,7 @@ public class BoardDao {
 	    Board b = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rset = null;
-	    String sql = "SELECT "
-	    		   + "B.BOARD_NO, "
-	    		   + "B.BOARD_TYPE, "
-	    		   + "B.CATEGORY_NO, "
-	    		   + "C.CATEGORY_NAME, "
-	               + "B.BOARD_TITLE, "
-	               + "B.BOARD_CONTENT, "
-	               + "B.BOARD_WRITER AS BOARD_WRITER_NO, "
-	               + "M.MEMBER_ID AS BOARD_WRITER, "
-	               + "B.COUNT, "
-	               + "B.CREATE_DATE, "
-	               + "A.FILE_NO, "
-	               + "A.ORIGIN_NAME, "
-	               + "A.CHANGE_NAME, "
-	               + "A.FILE_PATH, "
-	               + "A.UPLOAD_DATE, "
-	               + "A.FILE_LEVEL "
-	               + "FROM BOARD B "
-	               + "JOIN MEMBER M ON (B.BOARD_WRITER = M.MEMBER_NO) "
-	               + "JOIN CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO) "
-	               + "LEFT JOIN ATTACHMENT A ON (B.BOARD_NO = A.REF_BNO AND A.STATUS = 'Y') "
-	               + "WHERE B.BOARD_NO = ? AND B.STATUS = 'Y'";
+	    String sql = prop.getProperty("selectBoard");
 	    try {
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, boardNo);
@@ -131,7 +106,7 @@ public class BoardDao {
 	            b.setBoardTitle(rset.getString("BOARD_TITLE"));
 	            b.setBoardContent(rset.getString("BOARD_CONTENT"));
 	            b.setBoardWriter(rset.getInt("BOARD_WRITER_NO"));
-	            b.setWriterId(rset.getString("BOARD_WRITER"));
+	            b.setWriterId(rset.getString("WRITER_ID"));
 	            b.setCount(rset.getInt("COUNT"));
 	            b.setCreateDate(rset.getDate("CREATE_DATE"));
 	            
@@ -173,7 +148,7 @@ public class BoardDao {
 	public int deleteBoard(Connection conn, int boardNo) {
 	    int result = 0;
 	    PreparedStatement pstmt = null;
-	    String sql = "UPDATE BOARD SET STATUS = 'N' WHERE BOARD_NO = ?";
+	    String sql = prop.getProperty("deleteBoard");
 
 	    try {
 	        pstmt = conn.prepareStatement(sql);
@@ -190,24 +165,7 @@ public class BoardDao {
 	public int insertAttachment(Connection conn, Board b) {
 	    int result = 0;
 	    PreparedStatement pstmt = null;
-	    String sql = "INSERT INTO ATTACHMENT "
-	               + "("
-	               + "FILE_NO, "
-	               + "REF_BNO, "
-	               + "ORIGIN_NAME, "
-	               + "CHANGE_NAME, "
-	               + "FILE_PATH, "
-	               + "FILE_LEVEL"
-	               + ") "
-	               + "VALUES "
-	               + "("
-	               + "SEQ_FNO.NEXTVAL, "
-	               + "?, "
-	               + "?, "
-	               + "?, "
-	               + "?, "
-	               + "?"
-	               + ")";
+	    String sql = prop.getProperty("insertAttachment");
 
 	    try {
 	        pstmt = conn.prepareStatement(sql);
@@ -227,7 +185,7 @@ public class BoardDao {
 	
 	public int selectBoardNo(Connection conn) {
 	    int boardNo = 0;
-	    String sql = "SELECT SEQ_BNO.CURRVAL FROM DUAL";
+	    String sql = prop.getProperty("selectBoardNo");
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql);
 	         ResultSet rset = pstmt.executeQuery()) {
 	        if (rset.next()) {
@@ -237,6 +195,24 @@ public class BoardDao {
 	        e.printStackTrace();
 	    }
 	    return boardNo;
+	}
+	
+	public int increaseCount(Connection conn, int boardNo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("increaseCount");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, boardNo);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(pstmt);
+	    }
+		
+		return result;
 	}
 	
 }

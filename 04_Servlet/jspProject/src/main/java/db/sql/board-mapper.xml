@@ -1,18 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<entry key="selectBoardList">
-    SELECT
-    (
-	      BOARD_NO,
-	      BOARD_TYPE,
-	      CATEGORY_NO,
-	      BOARD_TITLE,
-	      BOARD_WRITER,
-	      COUNT,
-	      CREATE_DATE,
-	      STATUS
-	)
-    FROM BOARD
-    WHERE STATUS = 'Y'
-    ORDER BY BOARD_NO DESC
-</entry>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectList">
+	    SELECT B.BOARD_NO,
+		       B.BOARD_TYPE,
+		       B.CATEGORY_NO,
+		       C.CATEGORY_NAME, 
+		       B.BOARD_TITLE,
+		       B.BOARD_CONTENT,
+		       M.MEMBER_ID AS WRITER_ID,
+		       B.COUNT,
+		       B.CREATE_DATE,
+		       B.STATUS
+	    FROM BOARD B
+	    JOIN CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO)
+	    JOIN MEMBER M ON (B.BOARD_WRITER = M.MEMBER_NO)
+	    WHERE B.STATUS = 'Y'
+	    ORDER BY B.BOARD_NO DESC
+	</entry>
+	
+	<entry key="insertBoard">
+		INSERT INTO BOARD
+        (
+				BOARD_NO, 
+                BOARD_TYPE, 
+                CATEGORY_NO, 
+                BOARD_TITLE, 
+                BOARD_CONTENT, 
+                BOARD_WRITER, 
+                COUNT, 
+                CREATE_DATE, 
+                STATUS
+        ) 
+        VALUES (
+			SEQ_BNO.NEXTVAL, 
+			?, 
+			?, 
+			?, 
+			?, 
+			?, 
+			DEFAULT, 
+			DEFAULT, 
+			DEFAULT
+		)
+	</entry>
+	
+	<entry key="selectBoard">
+	    SELECT B.BOARD_NO,
+		       B.BOARD_TYPE,
+		       B.CATEGORY_NO,
+		       C.CATEGORY_NAME, 
+		       B.BOARD_TITLE,
+		       B.BOARD_CONTENT,
+		       B.BOARD_WRITER AS BOARD_WRITER_NO,
+		       M.MEMBER_ID AS WRITER_ID,
+		       B.COUNT,
+		       B.CREATE_DATE,
+		       A.FILE_NO,
+		       A.ORIGIN_NAME, 
+		       A.CHANGE_NAME, 
+		       A.FILE_PATH, 
+		       A.UPLOAD_DATE, 
+		       A.FILE_LEVEL 
+	    FROM BOARD B
+	    JOIN MEMBER M ON(B.BOARD_WRITER = M.MEMBER_NO)
+	    JOIN CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO)
+	    LEFT JOIN ATTACHMENT A ON (B.BOARD_NO = A.REF_BNO AND A.STATUS = 'Y')
+	    WHERE B.BOARD_NO = ? AND B.STATUS = 'Y'
+	</entry>
+	
+	<entry key="insertAttachment">
+		INSERT INTO ATTACHMENT
+        (
+				FILE_NO, 
+                REF_BNO, 
+                ORIGIN_NAME, 
+                CHANGE_NAME, 
+                FILE_PATH, 
+                FILE_LEVEL
+        ) 
+        VALUES (
+			SEQ_FNO.NEXTVAL, 
+			?, 
+			?, 
+			?, 
+			?, 
+			?
+		)
+	</entry>
+	
+	<entry key="deleteBoard">
+		UPDATE BOARD SET STATUS = 'N'
+		WHERE BOARD_NO = ?
+	</entry>
+	
+	<entry key="selectBoardNo">
+		SELECT SEQ_BNO.CURRVAL FROM DUAL
+	</entry>
+	
+	<entry key="increaseCount">
+		UPDATE BOARD SET COUNT = COUNT + 1
+		WHERE BOARD_NO = ?
+	</entry>
+</properties>

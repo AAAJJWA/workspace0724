@@ -44,8 +44,13 @@ public class BoardService {
 	
 	public Board selectBoard(int boardNo) {
         Connection conn = getConnection();
-        Board b = new BoardDao().selectBoard(conn, boardNo);
         
+        int result = new BoardDao().increaseCount(conn, boardNo);
+        Board b = new BoardDao().selectBoard(conn, boardNo);
+
+        if (result > 0) commit(conn);
+        else rollback(conn);
+
         close(conn);
         return b;
     }

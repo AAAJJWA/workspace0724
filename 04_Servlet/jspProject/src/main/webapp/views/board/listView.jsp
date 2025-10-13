@@ -107,19 +107,7 @@
                 	<c:forEach var="b" items="${list}">
                 		<tr onclick="location.href='${pageContext.request.contextPath}/detail.bo?bno=${b.boardNo}'">
                             <td>${b.boardNo}</td>
-                            <td>
-                            	<!-- ${b.categoryNo} -->
-                            	<c:choose>
-					                <c:when test="${b.categoryNo == 10}">공통</c:when>
-					                <c:when test="${b.categoryNo == 20}">운동</c:when>
-					                <c:when test="${b.categoryNo == 30}">등산</c:when>
-					                <c:when test="${b.categoryNo == 40}">게임</c:when>
-					                <c:when test="${b.categoryNo == 50}">낚시</c:when>
-					                <c:when test="${b.categoryNo == 60}">요리</c:when>
-					                <c:when test="${b.categoryNo == 70}">기타</c:when>
-					                <c:otherwise>미지정</c:otherwise>
-					            </c:choose>
-                            </td>
+                            <td>${b.categoryName}</td>
                             <td>${b.boardTitle}</td>
                             <td>${b.writerId}</td>
                             <td>${b.count}</td>
@@ -146,7 +134,7 @@
               	<button class="btn btn-outline-primary" >4</button>
               	<button class="btn btn-outline-primary" >5</button>
            	    <button class="btn btn-primary">
-                &lt; 다음
+                다음 &gt;
                 </button>
             </div>
         </div>
