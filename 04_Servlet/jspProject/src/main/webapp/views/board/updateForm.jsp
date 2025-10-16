@@ -88,20 +88,23 @@
 		<div class="board-card">
 			<h2>일반게시글 수정하기</h2>
 
-			<form action="${pageContext.request.contextPath}/update.bo" method="post" >
-				<input type="hidden" name="boardNo" value="${board.boardNo}">
+			<form action="${pageContext.request.contextPath}/update.bo" method="post" enctype="multipart/form-data" >
+				<input type="hidden" name="bno" value="${board.boardNo}">
 				<table class="form-table">
 					<tr>
 						<th>카테고리</th>
 						<td>
 							<select name="category">
-								<option value="10" ${board.categoryNo == 10 ? 'selected' : ''}>공통</option>
-			                    <option value="20" ${board.categoryNo == 20 ? 'selected' : ''}>운동</option>
-			                    <option value="30" ${board.categoryNo == 30 ? 'selected' : ''}>등산</option>
-			                    <option value="40" ${board.categoryNo == 40 ? 'selected' : ''}>게임</option>
-			                    <option value="50" ${board.categoryNo == 50 ? 'selected' : ''}>낚시</option>
-			                    <option value="60" ${board.categoryNo == 60 ? 'selected' : ''}>요리</option>
-			                    <option value="70" ${board.categoryNo == 70 ? 'selected' : ''}>기타</option>
+								<c:forEach var="c" items="${categories}">
+									<c:choose>
+										<c:when test="${c.categoryNo == board.categoryNo}">
+											<option value="${c.categoryNo}" selected>${c.categoryName}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${c.categoryNo}">${c.categoryName}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
 							</select>
 						</td>
 					</tr>
@@ -120,6 +123,10 @@
 					<tr>
 						<th>첨부파일</th>
 						<td>
+							<c:if test="${at != null}">
+								기존파일 : ${at.originName} <br><br>
+								<input type="hidden" name="originFileNo" value="${at.fileNo}">
+							</c:if>
 							<input type="file" name="upfile">
 						</td>
 					</tr>
@@ -127,7 +134,7 @@
 
 				<div class="button-group">
 					<button type="submit" class="btn btn-primary">수정하기</button>
-					<button type="reset" class="btn btn-secondary" onclick="history.back()">취소하기</button>
+					<button type="reset" class="btn btn-secondary">취소하기</button>
 				</div>
 			</form>
 		</div>

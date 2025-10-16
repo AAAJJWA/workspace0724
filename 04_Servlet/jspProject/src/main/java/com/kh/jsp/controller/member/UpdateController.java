@@ -2,9 +2,7 @@ package com.kh.jsp.controller.member;
 
 import java.io.IOException;
 
-import com.kh.jsp.model.vo.Board;
 import com.kh.jsp.model.vo.Member;
-import com.kh.jsp.service.BoardService;
 import com.kh.jsp.service.MemberService;
 
 import jakarta.servlet.ServletException;
@@ -17,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Servlet implementation class UpdateController
  */
-@WebServlet(urlPatterns = {"/update.me", "/update.bo"})
+@WebServlet("/update.me")
 public class UpdateController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,21 +32,6 @@ public class UpdateController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//요청된 회원정보 -> 정보수정 -> int -> 성공(mypage), 실패(error)
-		
-		String uri = request.getRequestURI();
-
-		// 회원정보 수정 요청일 경우
-		if (uri.endsWith("update.me")) {
-			updateMember(request, response);
-
-		// 게시글 수정 요청일 경우
-		} else if (uri.endsWith("update.bo")) {
-			updateBoard(request, response);
-		}
-	
-	}
-
-	private void updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String userId = request.getParameter("userId");
 		String phone = request.getParameter("phone");
@@ -75,44 +58,7 @@ public class UpdateController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/myPage.me");
 		}
 	}
-	
-	private void updateBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-		int categoryNo = Integer.parseInt(request.getParameter("category"));
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		
-		Board b = Board.createUpdateBoard(boardNo, categoryNo, title, content);
-		HttpSession session = request.getSession();
-		
-		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
-		
-		if (loginMember == null) {
-	    	request.setAttribute("errorMsg", "로그인 후 이용 가능합니다.");
-            request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-	        return;
-	    }
-		
-		Board board = new BoardService().selectBoard(boardNo);
-		
-		if (loginMember.getMemberNo() != board.getBoardWriter()) {
-            session.setAttribute("alertMsg", "작성자만 수정할 수 있습니다.");
-            response.sendRedirect(request.getContextPath() + "/detail.bo?bno=" + boardNo);
-            return;
-        }
-		
-		b = new BoardService().updateBoard(b);
-
-		if (b == null) {
-			request.setAttribute("errorMsg", "게시글 수정에 실패했습니다.");
-			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
-		} else {
-			session.setAttribute("alertMsg", "게시글이 수정되었습니다.");
-			response.sendRedirect(request.getContextPath() + "/detail.bo?bno=" + boardNo);
-		}
-	}
-	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -120,4 +66,5 @@ public class UpdateController extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
 }

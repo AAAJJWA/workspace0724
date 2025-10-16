@@ -3,9 +3,7 @@ package com.kh.jsp.controller.board;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
-import com.kh.jsp.model.vo.Category;
 import com.kh.jsp.service.BoardService;
 
 import jakarta.servlet.ServletException;
@@ -15,16 +13,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class UpdateController
+ * Servlet implementation class ThumbnailListController
  */
-@WebServlet(name = "updateForm.bo", urlPatterns = { "/updateForm.bo" })
-public class UpdateFormController extends HttpServlet {
+@WebServlet("/list.th")
+public class ThumbnailListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateFormController() {
+    public ThumbnailListController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,19 +31,10 @@ public class UpdateFormController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int boardNo = Integer.parseInt(request.getParameter("bno"));
+		ArrayList<Board> list = new BoardService().selectThumbnailList();
 		
-		BoardService boardService = new BoardService();
-		
-		ArrayList<Category> categories = boardService.selectAllCategory();
-		Board b = boardService.selectBoardByBoardNo(boardNo);
-		Attachment at = boardService.selectAttachment(boardNo);
-		
-		request.setAttribute("categories", categories);
-		request.setAttribute("board", b);
-		request.setAttribute("at", at);
-		
-		request.getRequestDispatcher("views/board/updateForm.jsp").forward(request, response);
+		request.setAttribute("list", list);
+		request.getRequestDispatcher("views/board/thumbnailListView.jsp").forward(request, response);
 	}
 
 	/**

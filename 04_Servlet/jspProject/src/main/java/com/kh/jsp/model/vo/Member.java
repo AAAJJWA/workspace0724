@@ -65,13 +65,4 @@ public class Member {
 		
 		return m;
 	}
-	
-	public static Member deleteMember(String userPwd,
-									  String status) {
-		Member m = new Member();
-		m.setMemberPwd(userPwd);
-		m.setStatus(status);
-
-		return m;
-	}
 }

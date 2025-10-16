@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.kh.jsp.model.vo.Attachment;
 import com.kh.jsp.model.vo.Board;
-import com.kh.jsp.model.vo.Category;
 import com.kh.jsp.service.BoardService;
 
 import jakarta.servlet.ServletException;
@@ -15,16 +14,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class UpdateController
+ * Servlet implementation class ThumbnailDetailController
  */
-@WebServlet(name = "updateForm.bo", urlPatterns = { "/updateForm.bo" })
-public class UpdateFormController extends HttpServlet {
+@WebServlet("/detail.th")
+public class ThumbnailDetailController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateFormController() {
+    public ThumbnailDetailController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,18 +33,26 @@ public class UpdateFormController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
-		
 		BoardService boardService = new BoardService();
 		
-		ArrayList<Category> categories = boardService.selectAllCategory();
-		Board b = boardService.selectBoardByBoardNo(boardNo);
-		Attachment at = boardService.selectAttachment(boardNo);
+		//board의 조회수 1 증가
+		int result = boardService.increaseCount(boardNo);
+		Board board = boardService.selectBoardByBoardNo(boardNo);
 		
-		request.setAttribute("categories", categories);
-		request.setAttribute("board", b);
-		request.setAttribute("at", at);
-		
-		request.getRequestDispatcher("views/board/updateForm.jsp").forward(request, response);
+		System.out.println(boardNo);
+		System.out.println(board);
+		if(result > 0 && board != null) {
+			//at조회 -> request담기
+			ArrayList<Attachment> list = boardService.selectAttachmentList(board.getBoardNo());
+			
+			request.setAttribute("board", board);
+			request.setAttribute("atList", list);
+			
+			request.getRequestDispatcher("views/board/thumbnailDetailView.jsp").forward(request, response);
+		} else {
+			request.setAttribute("errorMsg", "정상적인 접근이 아닙니다.");
+			request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
+		}
 	}
 
 	/**

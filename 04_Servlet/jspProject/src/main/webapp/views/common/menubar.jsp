@@ -19,6 +19,10 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
+    <!-- jQuery -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <style>
         body{
             font-family: "Noto Sans KR", sans-serif;
@@ -114,7 +118,7 @@
                 <li class="nav-item"><a class="nav-link px-4" href="${pageContext.request.contextPath}">HOME</a></li>
                 <li class="nav-item"><a class="nav-link px-4" href="">공지사항</a></li>
                 <li class="nav-item"><a class="nav-link px-4" href="${pageContext.request.contextPath}/list.bo">일반게시판</a></li>
-                <li class="nav-item"><a class="nav-link px-4" href="">사진게시판</a></li>
+                <li class="nav-item"><a class="nav-link px-4" href="${pageContext.request.contextPath}/list.th">사진게시판</a></li>
             </ul>
         </div>
     </nav>
