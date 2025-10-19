@@ -43,4 +43,23 @@ public class MemberService {
 		sqlSession.close();
 		return result;
 	}
+	
+	public Member updateMember(Member m) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = memberDao.updateMember(sqlSession, m);
+		
+		Member updateMember = null;
+		
+		if(result > 0) {
+			sqlSession.commit();
+			updateMember = new MemberDao().selectMemberByUserId(sqlSession, m);
+		} else {
+			sqlSession.rollback();
+		}
+		
+		sqlSession.close();
+		return updateMember;
+	}
 }
