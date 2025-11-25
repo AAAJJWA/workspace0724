@@ -20,13 +20,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor())
-                .addPathPatterns(   // 특정 경로에 인터셉터를 동작시키겠다
+                .addPathPatterns( // 특정 경로에 인터셉터를 동작시키겠다.
                         "/**"
-                ).excludePathPatterns(
+                ).excludePathPatterns( //다만 이 경로들은 인터셉의 적용에서 제외
                         "/",
                         "/login.me",
                         "/enrollForm.me",
-                        "/idDuplicateCheck.me",
+                        "/idDulpicateCheck.me",
                         "/insert.me",
                         "/static/**"
                 );
