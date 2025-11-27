@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../components/UserContext';
+import { PageContainer } from '../components/styled/LayoutStyled';
+import { Button } from '../components/styled/ButtonStyled';
+import { FormGroup } from '../components/styled/FormStyled';
 
 const UserRegistration = () => {
   const navigate = useNavigate();
@@ -42,12 +45,12 @@ const UserRegistration = () => {
   };
 
   return (
-    <div>
+    <PageContainer>
       <h2>유저 등록</h2>
 
       <form onSubmit={handleSubmit}>
 
-        <div>
+        <FormGroup>
           <label>이름 : </label>
           <input 
             type="text" 
@@ -55,9 +58,9 @@ const UserRegistration = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-        </div>
+        </FormGroup>
 
-        <div>
+        <FormGroup>
           <label>나이 : </label>
           <input 
             type="number" 
@@ -65,9 +68,9 @@ const UserRegistration = () => {
             value={age}
             onChange={(e) => setAge(e.target.value)}
           />
-        </div>
+        </FormGroup>
 
-        <div>
+        <FormGroup>
           <label>온라인 여부 : </label>
           <input
             type="checkbox"
@@ -75,13 +78,13 @@ const UserRegistration = () => {
             onChange={(e) => setIsOnline(e.target.checked)}
           />
           {isOnline ? " 온라인" : " 오프라인"}
-        </div>
+        </FormGroup>
 
-        <button type="submit">등록</button>
-        <button type="button" onClick={handleCancel}>취소</button>
+        <Button type="submit">등록</Button>
+        <Button type="button" onClick={handleCancel}>취소</Button>
 
       </form>
-    </div>
+    </PageContainer>
   )
 }
 

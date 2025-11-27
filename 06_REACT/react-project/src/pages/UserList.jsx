@@ -1,27 +1,30 @@
 import { Link } from 'react-router-dom';
 import { useUser } from '../components/UserContext';
+import { PageContainer } from '../components/styled/LayoutStyled';
+import { Button } from '../components/styled/ButtonStyled';
+import { UserListWrapper, UserItem } from '../components/styled/UserListStyled';
 
 const UserList = () => {
     const { users } = useUser();
 
     return (
-        <div>
+        <PageContainer>
             <h2>유저 목록</h2>
 
             <Link to="/user">
-                <button>유저 등록</button>
+                <Button>유저 등록</Button>
             </Link>
 
-            <ul>
+            <UserListWrapper>
                 {users.map(user => (
-                <li key={user.id}>
+                <UserItem key={user.id}>
                     <Link to={`/user/${user.id}`}>
                     {user.name} ({user.age}세) - {user.isOnline ? "🟢 온라인" : "🔴 오프라인"}
                     </Link>
-                </li>
+                </UserItem>
                 ))}
-            </ul>
-        </div>
+            </UserListWrapper>
+        </PageContainer>
     )
 }
 
