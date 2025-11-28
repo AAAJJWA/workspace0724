@@ -17,11 +17,11 @@ const UserList = () => {
 
             <UserListWrapper>
                 {users.map(user => (
-                <UserItem key={user.id}>
                     <Link to={`/user/${user.id}`}>
-                    {user.name} ({user.age}세) - {user.isOnline ? "🟢 온라인" : "🔴 오프라인"}
+                        <UserItem key={user.id}>
+                            {user.name} ({user.age}세) - {user.isOnline ? "🟢 온라인" : "🔴 오프라인"}
+                        </UserItem>
                     </Link>
-                </UserItem>
                 ))}
             </UserListWrapper>
         </PageContainer>

@@ -22,7 +22,7 @@ const UserRegistration = () => {
       return;
     }
 
-    if (!age || isNaN(age) || Number(age) <= 0) {
+    if (!/^[0-9]+$/.test(age) || Number(age) <= 0) {
       alert("나이를 올바르게 입력해주세요.");
       return;
     }

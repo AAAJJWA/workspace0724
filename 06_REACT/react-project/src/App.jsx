@@ -12,16 +12,9 @@ function App() {
     <UserProvider>
       <BrowserRouter>
         <Routes>
-          {/* 유저 목록 */}
           <Route path="/" element={<UserList />} />
-
-          {/* 유저 상세 */}
           <Route path="/user/:id" element={<UserDetail />} />
-
-          {/* 유저 등록 */}
           <Route path="/user" element={<UserRegistration />} />
-
-          {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
