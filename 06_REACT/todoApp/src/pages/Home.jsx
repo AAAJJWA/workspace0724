@@ -1,68 +1,48 @@
 import React from 'react'
-import { 
-  HomeContainer, 
-  ContentBox,
-  Title, 
-  StatsWrapper, 
-  StatCard, 
-  StatNumber, 
-  StatLabel,
-  CategoryWrapper,
-  CategoryTitle,
-  CategoryList,
-  CategoryItem,
-  CategoryName,
-  CategoryCount
-} from './Home.styled'
+import { AreaTitle, CategoryArea, CategoryCount, CategoryItem, CategoryList, CategoryName, HomeContainer, StateArea, StateCard, StateLabel, StateNumber, Title } from './Home.styled'
+import { useTodos } from '../context/TodoContext'
+import { CATEGORY_NAMES, CATEGORYS, ROUTES } from '../routes/routePaths';
 
 const Home = () => {
+  const { getState } = useTodos();
+  const state = getState();
+
+  const categories = [
+    { name: CATEGORY_NAMES[CATEGORYS.WORK], value: CATEGORYS.WORK, count: state.byCategory.work },
+    { name: CATEGORY_NAMES[CATEGORYS.STUDY], value: CATEGORYS.STUDY, count: state.byCategory.study },
+    { name: CATEGORY_NAMES[CATEGORYS.HEALTH], value: CATEGORYS.HEALTH, count: state.byCategory.health },
+  ]
+
   return (
     <HomeContainer>
-      <ContentBox>
+      <Title>Dashboard</Title>
 
-        <Title>Dashboard</Title>
+      <StateArea>
+        <StateCard>
+          <StateNumber>{state.total}</StateNumber>
+          <StateLabel>전체 할일</StateLabel>
+        </StateCard>
+        <StateCard>
+          <StateNumber>{state.pending}</StateNumber>
+          <StateLabel>미완료</StateLabel>
+        </StateCard>
+        <StateCard>
+          <StateNumber>{state.completed}</StateNumber>
+          <StateLabel>완료</StateLabel>
+        </StateCard>
+      </StateArea>
 
-        {/* 상단 통계 카드 */}
-        <StatsWrapper>
-          <StatCard>
-            <StatNumber>7</StatNumber>
-            <StatLabel>전체 할일</StatLabel>
-          </StatCard>
-
-          <StatCard>
-            <StatNumber>5</StatNumber>
-            <StatLabel>미완료</StatLabel>
-          </StatCard>
-
-          <StatCard>
-            <StatNumber>2</StatNumber>
-            <StatLabel>완료</StatLabel>
-          </StatCard>
-        </StatsWrapper>
-
-        {/* 카테고리 박스 */}
-        <CategoryWrapper>
-          <CategoryTitle>카테고리별 할일</CategoryTitle>
-
-          <CategoryList>
-            <CategoryItem>
-              <CategoryName>업무</CategoryName>
-              <CategoryCount>1</CategoryCount>
+      <CategoryArea>
+        <AreaTitle>카테고리별 할일</AreaTitle>
+        <CategoryList>
+          { categories.map(category => (
+            <CategoryItem key={categories.value} to={ROUTES.CATEGORY(category.value)}>
+              <CategoryName>{category.name}</CategoryName>
+              <CategoryCount>{category.count}</CategoryCount>
             </CategoryItem>
-
-            <CategoryItem>
-              <CategoryName>개인</CategoryName>
-              <CategoryCount>5</CategoryCount>
-            </CategoryItem>
-
-            <CategoryItem>
-              <CategoryName>학습</CategoryName>
-              <CategoryCount>1</CategoryCount>
-            </CategoryItem>
-          </CategoryList>
-        </CategoryWrapper>
-
-      </ContentBox>
+          ))}
+        </CategoryList>
+      </CategoryArea>
     </HomeContainer>
   )
 }
