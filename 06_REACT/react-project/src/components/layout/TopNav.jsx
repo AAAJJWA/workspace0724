@@ -9,7 +9,7 @@ const TopNav = () => {
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
     alert("로그아웃 되었습니다.");
-    window.location.reload();
+    navigate("/");
   };
 
   return (
