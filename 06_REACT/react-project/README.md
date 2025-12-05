@@ -139,5 +139,4 @@ npm run dev
 - 사용자 인증 흐름(회원가입 → 로그인 → 권한 기능) 구현
 
 ## 📚 참고 자료
-- https://github.com/johnuberbacher/react-card-builder
 - https://tcgbuilder.netlify.app/
