@@ -1,127 +1,252 @@
-import React, { forwardRef } from "react";
+import React, { useEffect, useRef } from "react";
 
-const YugiohCard = forwardRef(({ inputValues }, ref) => {
+const CARD_WIDTH = 725;
+const CARD_HEIGHT = 1040;
+
+export default function YugiohCard({ inputValues }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    canvas.width = CARD_WIDTH;
+    canvas.height = CARD_HEIGHT;
+
+    const ctx = canvas.getContext("2d");
+
+    // 렌더링 시작
+    drawCard(ctx, inputValues);
+  }, [inputValues]);
+
   return (
-    <div ref={ref} className="w-[750px] h-auto aspect-[7/10] relative">
-
-      {/* ===== 카드 중앙 이미지 ===== */}
-      <div
-        style={{ backgroundImage: `url(${inputValues.artwork})` }}
-        className="object-fit bg-center bg-cover select-none absolute rounded-[2px] top-[189px] left-[85px] w-[580px] h-[570px]"
-      ></div>
-
-      {/* ===== 카드 템플릿 PNG ===== */}
-      <img
-        src={`/yugioh/cards/${inputValues.yugiohTemplate}.png`}
-        className="select-none absolute top-0 left-0 right-0 bottom-0 h-full w-full object-fit"
-        alt="card template"
-      />
-
-      {/* ===== 속성 아이콘 ===== */}
-      <img
-        src={
-          inputValues.yugiohTemplate === "spell"
-            ? "/yugioh/icons/spell.png"
-            : inputValues.yugiohTemplate === "trap"
-            ? "/yugioh/icons/trap.png"
-            : `/yugioh/icons/${inputValues.yugiohElement}.png`
-        }
-        alt="element icon"
-        className="select-none absolute top-[48px] right-[50px]"
-      />
-
-      {/* ===== 카드 이름 ===== */}
-      <div
-        style={{ lineHeight: "85px" }}
-        className="select-none absolute top-[36px] left-[58px] font-ygo-matrix-sc-2 text-[84px]"
-      >
-        {inputValues.name}
-      </div>
-
-      {/* ===== 레벨 ===== */}
-      {inputValues.yugiohTemplate !== "spell" &&
-        inputValues.yugiohTemplate !== "trap" && (
-          <div className="absolute flex flex-row top-[126px] right-[74px] gap-0.5">
-            {Array.from({ length: inputValues.yugiohLevel }, (_, index) => (
-              <div
-                key={index}
-                className="w-[49px] h-auto aspect-[1/1] bg-cover bg-center"
-                style={{
-                  backgroundImage: `url("/yugioh/icons/level.png")`,
-                }}
-              ></div>
-            ))}
-          </div>
-        )}
-
-      {/* ===== SPELL / TRAP 타입 표시 ===== */}
-      {(inputValues.yugiohTemplate === "spell" ||
-        inputValues.yugiohTemplate === "trap") && (
-        <div className="select-none absolute top-[113px] right-[68px] font-ygo-stone-serif-sc-bold text-[41.75px]">
-          [{inputValues.yugiohTemplate} Card]
-        </div>
-      )}
-
-      {/* ===== 카드 타입 ===== */}
-      {inputValues.yugiohTemplate !== "spell" &&
-      inputValues.yugiohTemplate !== "trap" ? (
-        <div className="absolute top-[803px] left-[58px] text-[28px] font-ygo-stone-serif-sc-bold">
-          [{inputValues.yugiohCardType}]
-        </div>
-      ) : null}
-
-      {/* Edition / Card Number */}
-      <div className="absolute left-[82px] bottom-[270px] text-[30px] font-ygo-matrix-sc-2">
-        {inputValues.yugiohEdition}
-      </div>
-      <div className="absolute right-[82px] bottom-[270px] text-[30px] font-ygo-matrix-sc-2">
-        {inputValues.yugiohCardNumber}
-      </div>
-
-      {/* ===== Effect 텍스트 ===== */}
-      <div
-        className={
-          "absolute left-[58px] right-[56px] text-[22.25px] leading-[22.25px] font-ygo-matrix-book " +
-          (inputValues.yugiohTemplate === "spell" ||
-          inputValues.yugiohTemplate === "trap"
-            ? "top-[810px]"
-            : "top-[845px]")
-        }
-      >
-        {inputValues.yugiohEffect}
-      </div>
-
-      {/* ATK / DEF */}
-      {inputValues.yugiohTemplate !== "spell" &&
-      inputValues.yugiohTemplate !== "trap" ? (
-        <>
-          <div className="absolute bottom-[62px] right-[212px] text-[26px] font-ygo-stone-serif-sc-bold">
-            ATK/{inputValues.yugiohAttack}
-          </div>
-          <div className="absolute bottom-[62px] right-[57px] text-[26px] font-ygo-stone-serif-sc-bold">
-            DEF/{inputValues.yugiohDefense}
-          </div>
-        </>
-      ) : null}
-
-      {/* Identifier */}
-      <div className="select-none absolute bottom-[17px] right-[315px] left-[36px] font-ygo-matrix-sc-2 text-[32px] overflow-hidden whitespace-nowrap">
-        {inputValues.yugiohIdentifier}
-      </div>
-
-      {/* Copyright */}
-      <div className="select-none absolute bottom-[17px] right-[60px] left-[315px] font-ygo-matrix-sc-2 text-[32px] text-right flex gap-1.5 justify-end">
-        <span className="text-[24px] font-serif">©</span>
-        {inputValues.yugiohCopyright}
-      </div>
-
-      {/* Seal 아이콘 */}
-      <div
-        style={{ backgroundImage: `url("/yugioh/icons/seal.png")` }}
-        className="object-fit bg-center bg-cover select-none absolute rounded-[2px] bottom-[50px] right-[50px] w-[24px] h-[24px]"
-      ></div>
-    </div>
+    <canvas
+      ref={canvasRef}
+      style={{
+        width: "360px", // 화면에는 축소된 크기로 보이게
+        height: (360 * CARD_HEIGHT) / CARD_WIDTH + "px",
+        borderRadius: "12px",
+        background: "#000",
+      }}
+    ></canvas>
   );
-});
+}
 
-export default YugiohCard;
+/* ============================================================================================
+   ⬇⬇⬇ 카드 그리기
+============================================================================================= */
+function drawCard(ctx, values) {
+  ctx.clearRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
+
+  // 1. 템플릿 로드
+  loadImage(`/yugioh/cards/${values.yugiohTemplate}.png`).then((template) => {
+    ctx.drawImage(template, 0, 0, CARD_WIDTH, CARD_HEIGHT);
+
+    /* -----------------------------------------------------
+       2. Artwork (정확한 템플릿 좌표 적용)
+       ----------------------------------------------------- */
+    if (values.artwork) {
+      loadImage(values.artwork).then((img) => {
+        ctx.drawImage(img, 86.5, 189, 555, 545);
+      });
+    }
+
+    /* -----------------------------------------------------
+       3. 속성 아이콘
+       ----------------------------------------------------- */
+    const iconSrc =
+      values.yugiohTemplate === "spell"
+        ? "/yugioh/icons/spell.png"
+        : values.yugiohTemplate === "trap"
+        ? "/yugioh/icons/trap.png"
+        : `/yugioh/icons/${values.yugiohElement}.png`;
+
+    loadImage(iconSrc).then((icon) => {
+      ctx.drawImage(icon, 610, 40, 72, 72); // 템플릿 기준 정확 좌표
+    });
+
+    /* -----------------------------------------------------
+       4. 카드 이름
+       ----------------------------------------------------- */
+    drawText(ctx, values.name, 46, 100, "60px ygo-matrix-sc-2", "#000");
+
+    /* -----------------------------------------------------
+       5. 레벨
+       ----------------------------------------------------- */
+    if (values.yugiohTemplate !== "spell" && values.yugiohTemplate !== "trap") {
+      loadImage("/yugioh/icons/level.png").then((star) => {
+        const startX = 610;          
+        const spacing = 52;
+
+        for (let i = 0; i < values.yugiohLevel; i++) {
+          ctx.drawImage(star, startX - i * spacing, 122, 49, 49);
+        }
+      });
+    }
+
+    /* -----------------------------------------------------
+       6. Spell/Trap 카드 타입 텍스트
+       ----------------------------------------------------- */
+    if (["spell", "trap"].includes(values.yugiohTemplate)) {
+      drawText(
+        ctx,
+        `[${values.yugiohTemplate.toUpperCase()} CARD]`,
+        450,
+        160,
+        "34px ygo-stone-serif-sc-bold",
+        "#000"
+      );
+    }
+
+    /* -----------------------------------------------------
+       7. 몬스터 타입 텍스트
+       ----------------------------------------------------- */
+    if (!["spell", "trap"].includes(values.yugiohTemplate)) {
+      drawText(
+        ctx,
+        `[${values.yugiohCardType}]`,
+        50,
+        810,
+        "28px ygo-stone-serif-sc-bold",
+        "#000"
+      );
+    }
+
+    /* -----------------------------------------------------
+       8. Edition
+       ----------------------------------------------------- */
+    drawText(
+      ctx,
+      values.yugiohEdition,
+      70,
+      765,
+      "24px ygo-matrix-sc-2",
+      "#000"
+    );
+
+    /* -----------------------------------------------------
+       9. 카드 번호
+       ----------------------------------------------------- */
+    drawText(
+      ctx,
+      values.yugiohCardNumber,
+      655,
+      765,
+      "24px ygo-matrix-sc-2",
+      "#000",
+      "right"
+    );
+
+    /* -----------------------------------------------------
+       10. 카드 효과 줄바꿈
+       ----------------------------------------------------- */
+    drawMultilineText(
+      ctx,
+      values.yugiohEffect,
+      50,
+      840,
+      620, // max width
+      28,  // line height
+      "24px ygo-matrix-book"
+    );
+
+    /* -----------------------------------------------------
+       11. ATK / DEF
+       ----------------------------------------------------- */
+    if (!["spell", "trap"].includes(values.yugiohTemplate)) {
+      drawText(
+        ctx,
+        `ATK/${values.yugiohAttack}`,
+        410,
+        972,
+        "28px ygo-stone-serif-sc-bold",
+        "#000"
+      );
+
+      drawText(
+        ctx,
+        `DEF/${values.yugiohDefense}`,
+        670,
+        972,
+        "28px ygo-stone-serif-sc-bold",
+        "#000",
+        "right"
+      );
+    }
+
+    /* -----------------------------------------------------
+       12. Identifier
+       ----------------------------------------------------- */
+    drawText(
+      ctx,
+      values.yugiohIdentifier,
+      35,
+      1010,
+      "24px ygo-matrix-sc-2",
+      "#000"
+    );
+
+    /* -----------------------------------------------------
+       13. Copyright
+       ----------------------------------------------------- */
+    drawText(
+      ctx,
+      `© ${values.yugiohCopyright}`,
+      670,
+      1010,
+      "24px ygo-matrix-sc-2",
+      "#000",
+      "right"
+    );
+  });
+}
+
+
+
+/* ============================================================================================
+   이미지 로더
+============================================================================================= */
+function loadImage(src) {
+  return new Promise((res) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => res(img);
+    img.src = src;
+  });
+}
+
+/* ============================================================================================
+   텍스트 출력 함수
+============================================================================================= */
+function drawText(ctx, text, x, y, font, color, align = "left") {
+  ctx.font = font;
+  ctx.fillStyle = color;
+  ctx.textAlign = align;
+  ctx.fillText(text, x, y);
+}
+
+/* ============================================================================================
+   줄바꿈 텍스트 출력
+============================================================================================= */
+function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight, font) {
+  ctx.save();
+  ctx.font = font;
+  ctx.fillStyle = "#000";
+  ctx.textAlign = "left";
+
+  let line = "";
+  let currentY = y;
+
+  for (let char of text) {
+    const testLine = line + char;
+    const metrics = ctx.measureText(testLine);
+
+    if (metrics.width > maxWidth) {
+      ctx.fillText(line, x, currentY);
+      line = char;
+      currentY += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, currentY);
+  ctx.restore();
+}

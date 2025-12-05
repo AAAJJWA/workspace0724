@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   PageContainer,
   LeftPanel,
@@ -9,11 +10,19 @@ import {
   Input,
   TextArea,
   CardWrapper,
+  LevelGroup,
+  LevelLabels,
+  LevelRange,
+  Button,
+  Dice
 } from "./CardMake.styled";
 import YugiohCard from "../components/yugioh/YugiohCard";
 
 const CardMake = () => {
+  const navigate = useNavigate();
+
   const cardRef = useRef(null);
+  const logged = JSON.parse(localStorage.getItem("loggedInUser") || "null");
 
   const [inputValues, setInputValues] = useState({
     yugiohTemplate: "normal",
@@ -60,6 +69,46 @@ const CardMake = () => {
       yugiohIdentifier: rand.toString(),
     }));
   };
+
+  // 카드 저장 기능
+  const saveAsImage = () => {
+    const canvas = document.querySelector("canvas");
+    if (!canvas) return;
+
+    const link = document.createElement("a");
+    link.download = `${inputValues.name}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+
+  // 카드 등록 기능 
+  const saveCard = () => {
+    if (!logged) {
+      alert("로그인이 필요합니다!");
+      return;
+    }
+
+    const canvas = document.querySelector("canvas");
+    const thumbnail = canvas.toDataURL("image/png");
+
+    // 기존 저장된 카드 목록
+    const cards = JSON.parse(localStorage.getItem("cardList") || "[]");
+
+    const newCard = {
+      id: Date.now(),
+      ...inputValues,
+      author: logged.nickname,
+      thumbnail, // 썸네일로 사용
+    };
+
+    cards.push(newCard);
+    localStorage.setItem("cardList", JSON.stringify(cards));
+
+    alert("카드가 등록되었습니다!");
+
+    navigate("/");
+  };
+
 
   return (
     <PageContainer>
@@ -116,21 +165,22 @@ const CardMake = () => {
         {/* 레벨 */}
         <FormGroup>
           <Label>레벨:</Label>
-          <Input
-            type="range"
-            min="0"
-            max="12"
-            name="yugiohLevel"
-            value={inputValues.yugiohLevel}
-            onChange={handleChange}
-          />
-          <div style={{ fontSize: "12px", marginTop: "4px" }}>
-            {Array.from({ length: 13 }, (_, i) => (
-              <span key={i} style={{ marginRight: "6px" }}>
-                {i}
-              </span>
-            ))}
-          </div>
+          <LevelGroup>
+            <LevelRange
+              type="range"
+              min="0"
+              max="12"
+              name="yugiohLevel"
+              value={inputValues.yugiohLevel}
+              onChange={handleChange}
+            />
+
+            <LevelLabels>
+              {Array.from({ length: 13 }, (_, i) => (
+                <span key={i}>{i}</span>
+              ))}
+            </LevelLabels>
+          </LevelGroup>
         </FormGroup>
 
         {/* 이미지 업로드 */}
@@ -210,7 +260,7 @@ const CardMake = () => {
               value={inputValues.yugiohIdentifier}
               onChange={handleChange}
             />
-            <button
+            <Dice
               onClick={setRandomIdentifier}
               style={{
                 width: "40px",
@@ -221,7 +271,7 @@ const CardMake = () => {
               }}
             >
               🎲
-            </button>
+            </Dice>
           </div>
         </FormGroup>
 
@@ -234,12 +284,25 @@ const CardMake = () => {
             onChange={handleChange}
           />
         </FormGroup>
+
+        <FormGroup>
+          <Button onClick={saveAsImage}>
+            카드 저장하기
+          </Button>
+        </FormGroup>
+
+        <FormGroup>
+          <Button onClick={saveCard}>
+            카드 등록하기
+          </Button>
+        </FormGroup>
+
       </LeftPanel>
 
       {/* 미리보기 */}
       <RightPanel>
         <CardWrapper>
-          <YugiohCard ref={cardRef} inputValues={inputValues} />
+          <YugiohCard inputValues={inputValues} />
         </CardWrapper>
       </RightPanel>
     </PageContainer>
