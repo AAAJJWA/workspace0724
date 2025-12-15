@@ -26,7 +26,7 @@ const Register = () => {
   };
 
   // 회원가입 처리
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const { userid, nickname, password, password2 } = form;
 
     if (!userid || !nickname || !password) {
@@ -39,27 +39,50 @@ const Register = () => {
       return;
     }
 
-    // 기존 유저 목록 가져오기
-    const users = JSON.parse(localStorage.getItem("userList") || "[]");
+//     // 기존 유저 목록 가져오기
+//     const users = JSON.parse(localStorage.getItem("userList") || "[]");
+//
+//     // 중복 체크
+//     if (users.some((u) => u.userid === userid)) {
+//       alert("이미 존재하는 아이디입니다.");
+//       return;
+//     }
+//
+//     if (users.some((u) => u.nickname === nickname)) {
+//       alert("이미 존재하는 닉네임입니다.");
+//       return;
+//     }
+//
+//     // 저장
+//     const newUser = { userid, nickname, password };
+//     users.push(newUser);
+//     localStorage.setItem("userList", JSON.stringify(users));
 
-    // 중복 체크
-    if (users.some((u) => u.userid === userid)) {
-      alert("이미 존재하는 아이디입니다.");
+    try {
+      const response = await fetch("/api/members", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          loginId: userid,
+          password,
+          nickname,
+        }),
+      });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      alert(errorText);
       return;
     }
-
-    if (users.some((u) => u.nickname === nickname)) {
-      alert("이미 존재하는 닉네임입니다.");
-      return;
-    }
-
-    // 저장
-    const newUser = { userid, nickname, password };
-    users.push(newUser);
-    localStorage.setItem("userList", JSON.stringify(users));
 
     alert("회원가입 완료! 로그인해주세요.");
     navigate("/login");
+    } catch (error) {
+      console.error(error);
+      alert("서버와 통신 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -73,12 +96,12 @@ const Register = () => {
         </FormGroup>
 
         <FormGroup>
-            <Label>닉네임</Label>
-            <Input
-              name="nickname"
-              value={form.nickname}
-              onChange={handleChange}
-            />
+          <Label>닉네임</Label>
+          <Input
+            name="nickname"
+            value={form.nickname}
+            onChange={handleChange}
+          />
         </FormGroup>
 
 

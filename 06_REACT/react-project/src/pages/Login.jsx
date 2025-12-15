@@ -23,22 +23,51 @@ const Login = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const { userid, password } = form;
 
-    const users = JSON.parse(localStorage.getItem("userList") || "[]");
+//     const users = JSON.parse(localStorage.getItem("userList") || "[]");
+//
+//     const found = users.find((u) => u.userid === userid);
+//
+//     if (!found || found.password !== password) {
+//       alert("아이디 또는 비밀번호가 잘못되었습니다.");
+//       return;
+//     }
 
-    const found = users.find((u) => u.userid === userid);
-
-    if (!found || found.password !== password) {
-      alert("아이디 또는 비밀번호가 잘못되었습니다.");
+    if (!userid || !password) {
+      alert("아이디와 비밀번호를 입력해주세요.");
       return;
     }
 
-    localStorage.setItem("loggedInUser", JSON.stringify(found));
+    try {
+      const response = await fetch("/api/members/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          loginId: userid,
+          password,
+        }),
+      });
 
-    alert("로그인 성공!");
-    navigate("/");
+      if (!response.ok) {
+        const errorText = await response.text();
+        alert(errorText);
+        return;
+      }
+
+      const loginUser = await response.json();
+
+      localStorage.setItem("loggedInUser", JSON.stringify(loginUser));
+
+      alert("로그인 성공!");
+      navigate("/");
+      } catch (error) {
+        console.error(error);
+        alert("서버와 통신 중 오류가 발생했습니다.");
+      }
   };
 
   return (

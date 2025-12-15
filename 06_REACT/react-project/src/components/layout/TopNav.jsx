@@ -30,7 +30,7 @@ const TopNav = () => {
         ) : (
           <>
             <NavButton onClick={() => navigate("/login")}>로그인</NavButton>
-            <NavButton onClick={() => navigate("/signup")}>회원가입</NavButton>
+            <NavButton onClick={() => navigate("/register")}>회원가입</NavButton>
             <NavButton primary onClick={() => navigate("/make")}>
               카드 생성하기
             </NavButton>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.yugioh.mapper.CardMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO card (
+        owner_login_id, template, element, name, artwork,
+        level, effect, edition, card_number, card_type,
+        attack, defense, identifier, copyright
+        )
+        VALUES (
+        #{ownerLoginId}, #{template}, #{element}, #{name}, #{artwork},
+        #{level}, #{effect}, #{edition}, #{cardNumber}, #{cardType},
+        #{attack}, #{defense}, #{identifier}, #{copyright}
+        )
+    </insert>
+
+    <select id="findAll" resultType="com.kh.yugioh.entity.Card">
+        SELECT * FROM card ORDER BY id DESC
+    </select>
+
+    <select id="findOwner" resultType="com.kh.yugioh.entity.Card">
+        SELECT * FROM card
+        WHERE owner_login_id = #{ownerLoginId}
+        ORDER BY id DESC
+    </select>
+
+    <select id="findId" resultType="com.kh.yugioh.entity.Card">
+        SELECT * FROM card WHERE id = #{id}
+    </select>
+
+    <delete id="deleteId">
+        DELETE FROM card WHERE id = #{id}
+    </delete>
+
+</mapper>
