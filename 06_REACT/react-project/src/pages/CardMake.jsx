@@ -291,11 +291,11 @@ const CardMake = () => {
           </Button>
         </FormGroup>
 
-        <FormGroup>
-          <Button onClick={saveCard}>
-            카드 등록하기
-          </Button>
-        </FormGroup>
+        {logged && (
+          <FormGroup>
+            <Button onClick={saveCard}>카드 등록하기</Button>
+          </FormGroup>
+        )}
 
       </LeftPanel>
 

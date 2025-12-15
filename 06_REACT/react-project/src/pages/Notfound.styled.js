@@ -7,7 +7,7 @@ export const NotFoundWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #111;
+  background: #fff;
   padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
