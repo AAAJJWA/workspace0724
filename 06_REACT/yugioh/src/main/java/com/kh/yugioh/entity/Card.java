@@ -1,19 +1,21 @@
 package com.kh.yugioh.entity;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
 public class Card {
 
     private Long id;
 
-    private String ownerLoginId;   // 카드 소유자 (로그인 아이디)
-    private String template;       // yugiohTemplate
-    private String element;        // yugiohElement
+    private String ownerLoginId;
+    private String template;
+    private String element;
     private String name;
-    private String artwork;        // 이미지 URL or Base64
+    private String artwork;
     private int level;
     private String effect;
     private String edition;

@@ -67,16 +67,16 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<CardResponse> findMyCards(String ownerLoginId) {
         return cardMapper.findOwner(ownerLoginId).stream()
-                .map(c -> new CardResponse(
-                        c.getId(),
-                        c.getOwnerLoginId(),
-                        c.getName(),
-                        c.getArtwork(),
-                        c.getCardType(),
-                        c.getAttack(),
-                        c.getDefense()
-                ))
-                .toList();
+            .map(c -> new CardResponse(
+                c.getId(),
+                c.getOwnerLoginId(),
+                c.getName(),
+                c.getArtwork(),
+                c.getCardType(),
+                c.getAttack(),
+                c.getDefense()
+            ))
+            .toList();
     }
 
     @Override

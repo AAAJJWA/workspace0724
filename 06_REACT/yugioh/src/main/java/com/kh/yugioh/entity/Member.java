@@ -1,10 +1,12 @@
 package com.kh.yugioh.entity;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
 public class Member {
 
     private Long id;
