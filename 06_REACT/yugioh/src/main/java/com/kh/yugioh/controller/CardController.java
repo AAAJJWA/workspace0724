@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/cards")
 public class CardController {
 
     private final CardService cardService;
@@ -18,7 +19,8 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @PostMapping("/api/cards")
+    // 카드 생성
+    @PostMapping
     public ResponseEntity<CardResponse> create(
             @RequestBody CardRequest request
     ) {
@@ -26,13 +28,15 @@ public class CardController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/api/cards")
+    // 전체 카드 조회
+    @GetMapping
     public ResponseEntity<List<CardResponse>> list() {
         List<CardResponse> cards = cardService.findAll();
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
-    @GetMapping("/api/cards/my")
+    // 내 카드 조회
+    @GetMapping("/my")
     public ResponseEntity<List<CardResponse>> myCards(
             @RequestParam String loginId
     ) {
@@ -40,7 +44,15 @@ public class CardController {
         return new ResponseEntity<>(myCards, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/cards/{id}")
+    @GetMapping("/{id}")
+    public ResponseEntity<CardResponse> detail(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(cardService.findById(id));
+    }
+
+    // 카드 삭제
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
             @PathVariable Long id
     ) {

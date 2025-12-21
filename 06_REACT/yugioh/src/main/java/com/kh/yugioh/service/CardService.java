@@ -11,7 +11,9 @@ public interface CardService {
 
     List<CardResponse> findAll();
 
-    List<CardResponse> findMyCards(String ownerLoginId);
+    CardResponse findById(Long id);
+
+    List<CardResponse> findMyCards(String loginId);
 
     void delete(Long id);
 }

@@ -1,36 +1,38 @@
 package com.kh.yugioh.service;
 
-import com.kh.yugioh.mapper.MemberMapper;
 import com.kh.yugioh.controller.dto.request.LoginRequest;
 import com.kh.yugioh.controller.dto.request.MemberRequest;
 import com.kh.yugioh.controller.dto.response.LoginResponse;
 import com.kh.yugioh.controller.dto.response.MemberResponse;
 import com.kh.yugioh.entity.Member;
+import com.kh.yugioh.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class MemberServiceImpl implements com.kh.yugioh.Service.MemberService {
+@Transactional
+public class MemberServiceImpl implements MemberService {
 
-    private final MemberMapper memberMapper;
+    private final MemberRepository memberRepository;
 
-    public MemberServiceImpl(MemberMapper memberMapper) {
-        this.memberMapper = memberMapper;
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Override
-    public MemberResponse register(MemberRequest memberRequest) {
+    public MemberResponse register(MemberRequest req) {
 
-        if (memberMapper.existsLoginId(memberRequest.getLoginId())) {
+        if (memberRepository.existsByLoginId(req.getLoginId())) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
 
         Member member = new Member(
-                memberRequest.getLoginId(),
-                memberRequest.getPassword(),
-                memberRequest.getNickname()
+                req.getLoginId(),
+                req.getPassword(),
+                req.getNickname()
         );
 
-        memberMapper.save(member);
+        memberRepository.save(member);
 
         return new MemberResponse(
                 member.getId(),
@@ -40,15 +42,12 @@ public class MemberServiceImpl implements com.kh.yugioh.Service.MemberService {
     }
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest req) {
 
-        Member member = memberMapper.findLoginId(loginRequest.getLoginId());
+        Member member = memberRepository.findByLoginId(req.getLoginId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
 
-        if (member == null) {
-            throw new IllegalArgumentException("존재하지 않는 아이디입니다.");
-        }
-
-        if (!member.getPassword().equals(loginRequest.getPassword())) {
+        if (!member.getPassword().equals(req.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -58,5 +57,4 @@ public class MemberServiceImpl implements com.kh.yugioh.Service.MemberService {
                 member.getNickname()
         );
     }
-
 }

@@ -18,7 +18,7 @@ spring:
       max-request-size: 100MB
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -33,7 +33,3 @@ server:
       charset: UTF-8
       enabled: true
       force: true
-
-mybatis:
-  type-aliases-package: com.kh.yugioh.entity
-  mapper-locations: mappers/*.xml

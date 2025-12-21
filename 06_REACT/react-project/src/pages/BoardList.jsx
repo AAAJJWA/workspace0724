@@ -14,23 +14,35 @@ import {
 
 const BoardList = () => {
   const navigate = useNavigate();
-  const logged = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+  const [logged, setLogged] = useState(() =>
+    JSON.parse(localStorage.getItem("loggedInUser") || "null")
+  );
 
   const [showMyCards, setShowMyCards] = useState(false);
   const [savedCards, setSavedCards] = useState([]);
 
   useEffect(() => {
-    const cards = JSON.parse(localStorage.getItem("cardList") || "[]");
-    setSavedCards(cards);
-  }, []);
+    const fetchCards = async () => {
+      try {
+        const url =
+          showMyCards && logged
+            ? `/api/cards/my?loginId=${logged.loginId}`
+            : "/api/cards";
 
-  const filteredCards = showMyCards
-    ? savedCards.filter((c) => c.author === logged?.nickname)
-    : savedCards;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        setSavedCards(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchCards();
+  }, [showMyCards, logged]);
 
   return (
     <PageWrapper>
-
       <Container>
         <SectionTitleRow>
           <SectionTitle>
@@ -48,19 +60,24 @@ const BoardList = () => {
         </SectionTitleRow>
 
         <CardGrid>
-          {filteredCards.map((card) => (
-            <CardItem key={card.id} onClick={() => navigate(`/detail/${card.id}`)}>
-              <CardThumb src={card.thumbnail} alt="card thumbnail" />
+          {savedCards.map((card) => (
+            <CardItem
+              key={card.id}
+              onClick={() => navigate(`/cards/${card.id}`)}
+            >
+              <CardThumb src={card.artwork} alt="card thumbnail" />
               <CardInfo>
                 <h3>{card.name}</h3>
-                <p>작성자: {card.author}</p>
+                <p>작성자: {card.memberNickname}</p>
               </CardInfo>
             </CardItem>
           ))}
 
-          {filteredCards.length === 0 && (
+          {savedCards.length === 0 && (
             <p style={{ padding: "20px", color: "#666" }}>
-              {showMyCards ? "만든 카드가 없습니다." : "등록된 카드가 없습니다."}
+              {showMyCards
+                ? "만든 카드가 없습니다."
+                : "등록된 카드가 없습니다."}
             </p>
           )}
         </CardGrid>

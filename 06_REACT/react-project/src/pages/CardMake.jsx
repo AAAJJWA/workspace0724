@@ -82,32 +82,58 @@ const CardMake = () => {
   };
 
   // 카드 등록 기능 
-  const saveCard = () => {
-    if (!logged) {
-      alert("로그인이 필요합니다!");
+  const saveCard = async () => {
+  if (!logged) {
+    alert("로그인이 필요합니다!");
+    return;
+  }
+
+  const canvas = document.querySelector("canvas");
+  if (!canvas) {
+    alert("카드 미리보기를 찾을 수 없습니다.");
+    return;
+  }
+
+  const thumbnail = canvas.toDataURL("image/png");
+
+  try {
+    const response = await fetch("/api/cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        memberId: logged.id,
+        yugiohTemplate: inputValues.yugiohTemplate,
+        yugiohElement: inputValues.yugiohElement,
+        name: inputValues.name,
+        artwork: thumbnail,
+        yugiohLevel: inputValues.yugiohLevel,
+        yugiohEffect: inputValues.yugiohEffect,
+        yugiohEdition: inputValues.yugiohEdition,
+        yugiohCardNumber: inputValues.yugiohCardNumber,
+        yugiohCardType: inputValues.yugiohCardType,
+        yugiohAttack: inputValues.yugiohAttack,
+        yugiohDefense: inputValues.yugiohDefense,
+        yugiohIdentifier: inputValues.yugiohIdentifier,
+        yugiohCopyright: inputValues.yugiohCopyright,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      alert(errorText || "카드 등록 실패");
       return;
     }
 
-    const canvas = document.querySelector("canvas");
-    const thumbnail = canvas.toDataURL("image/png");
+    // alert("카드가 등록되었습니다!");
+    // navigate("/");
 
-    // 기존 저장된 카드 목록
-    const cards = JSON.parse(localStorage.getItem("cardList") || "[]");
-
-    const newCard = {
-      id: Date.now(),
-      ...inputValues,
-      author: logged.nickname,
-      thumbnail, // 썸네일로 사용
-    };
-
-    cards.push(newCard);
-    localStorage.setItem("cardList", JSON.stringify(cards));
-
-    alert("카드가 등록되었습니다!");
-
-    navigate("/");
-  };
+  } catch (error) {
+    console.error(error);
+    alert("서버와 통신 중 오류가 발생했습니다.");
+  }
+};
 
 
   return (

@@ -29,7 +29,7 @@ const App = () => {
         <Route path="/Login" element={<Login />} />
 
         {/* 회원가입 */}
-        <Route path="/signup" element={<Register />} />
+        <Route path="/register" element={<Register />} />
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />

@@ -14,7 +14,7 @@ import {
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    userid: "",
+    loginId: "",
     nickname: "",
     password: "",
     password2: "",
@@ -25,11 +25,10 @@ const Register = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 회원가입 처리
   const handleRegister = async () => {
-    const { userid, nickname, password, password2 } = form;
+    const { loginId, nickname, password, password2 } = form;
 
-    if (!userid || !nickname || !password) {
+    if (!loginId || !nickname || !password) {
       alert("모든 항목을 입력해주세요.");
       return;
     }
@@ -39,25 +38,6 @@ const Register = () => {
       return;
     }
 
-//     // 기존 유저 목록 가져오기
-//     const users = JSON.parse(localStorage.getItem("userList") || "[]");
-//
-//     // 중복 체크
-//     if (users.some((u) => u.userid === userid)) {
-//       alert("이미 존재하는 아이디입니다.");
-//       return;
-//     }
-//
-//     if (users.some((u) => u.nickname === nickname)) {
-//       alert("이미 존재하는 닉네임입니다.");
-//       return;
-//     }
-//
-//     // 저장
-//     const newUser = { userid, nickname, password };
-//     users.push(newUser);
-//     localStorage.setItem("userList", JSON.stringify(users));
-
     try {
       const response = await fetch("/api/members", {
         method: "POST",
@@ -65,20 +45,20 @@ const Register = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          loginId: userid,
+          loginId,
           password,
           nickname,
         }),
       });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      alert(errorText);
-      return;
-    }
+      if (!response.ok) {
+        const errorText = await response.text();
+        alert(errorText);
+        return;
+      }
 
-    alert("회원가입 완료! 로그인해주세요.");
-    navigate("/login");
+      alert("회원가입 완료! 로그인해주세요.");
+      navigate("/login");
     } catch (error) {
       console.error(error);
       alert("서버와 통신 중 오류가 발생했습니다.");
@@ -92,18 +72,13 @@ const Register = () => {
 
         <FormGroup>
           <Label>아이디</Label>
-          <Input name="userid" value={form.userid} onChange={handleChange} />
+          <Input name="loginId" value={form.loginId} onChange={handleChange} />
         </FormGroup>
 
         <FormGroup>
           <Label>닉네임</Label>
-          <Input
-            name="nickname"
-            value={form.nickname}
-            onChange={handleChange}
-          />
+          <Input name="nickname" value={form.nickname} onChange={handleChange} />
         </FormGroup>
-
 
         <FormGroup>
           <Label>비밀번호</Label>

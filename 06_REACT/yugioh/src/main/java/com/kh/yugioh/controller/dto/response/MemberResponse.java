@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class MemberResponse {
 
-    private Long id;
-    private String loginId;
-    private String nickname;
+    private final Long id;
+    private final String loginId;
+    private final String nickname;
 
     public MemberResponse(Long id, String loginId, String nickname) {
         this.id = id;

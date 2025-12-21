@@ -1,4 +1,4 @@
-package com.kh.yugioh.Service;
+package com.kh.yugioh.service;
 
 import com.kh.yugioh.controller.dto.request.LoginRequest;
 import com.kh.yugioh.controller.dto.request.MemberRequest;

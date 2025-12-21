@@ -1,13 +1,12 @@
 package com.kh.yugioh.controller.dto.request;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class CardRequest {
 
-    private String ownerLoginId;
+    // 🔑 로그인 유저 PK
+    private Long memberId;
 
     private String yugiohTemplate;
     private String yugiohElement;
@@ -22,5 +21,4 @@ public class CardRequest {
     private int yugiohDefense;
     private String yugiohIdentifier;
     private String yugiohCopyright;
-
 }
