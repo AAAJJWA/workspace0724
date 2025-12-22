@@ -19,21 +19,21 @@ Controller → Service → Repository → Entity 계층을 명확히 분리하�
 ```
 src/main/java/com/kh/yugioh
  ├── controller
- │   ├── CardController
- │   ├── MemberController
+ │   ├── CardController           # 카드 관련 REST API
+ │   ├── MemberController         # 회원 관련 REST AP
  │   └── dto
- │       ├── request
+ │       ├── request              # 클라이언트 요청 DTO
  │       │   ├── CardRequest
  │       │   ├── LoginRequest
  │       │   └── MemberRequest
- │       └── response
+ │       └── response             # 응답 전용 DTO
  │           ├── CardResponse
  │           ├── LoginResponse
  │           └── MemberResponse
  │
  ├── entity
- │   ├── Card
- │   └── Member
+ │   ├── Card                     # Card 엔티티
+ │   └── Member                   # Member 엔티티
  │
  ├── repository
  │   ├── CardRepository
@@ -131,22 +131,173 @@ spring:
 ```
 
 
-🔗 API 예시
-- 카드 등록
-```
-POST /api/cards
-Content-Type: application/json
+## 🔗 API 명세 (API Specification)
 
-{
-  "memberId": 1,
-  "name": "새 카드",
-  "yugiohTemplate": "normal",
-  "yugiohElement": "dark",
-  "yugiohLevel": 4,
-  "yugiohEffect": "효과 설명",
-  "yugiohIdentifier": "1234567890"
-}
+본 프로젝트의 백엔드는 React 프론트엔드와 REST API 방식으로 통신하며,
+회원(Member)과 카드(Card)를 중심으로 한 API를 제공합니다.
+
+모든 요청/응답은 JSON 형식을 사용합니다.
+
+
+### 👤 Member API
+
+#### 1️⃣ 회원 가입
+
+Method: POST  
+URL: /api/members/register  
+설명: 신규 회원 가입
+
+Request Body  
 ```
+memberId: 없음  
+loginId: String (중복 불가)  
+password: String  
+nickname: String (중복 불가)
+```
+
+Response  
+```
+id: Long  
+loginId: String  
+nickname: String
+```
+
+
+#### 2️⃣ 로그인
+
+Method: POST  
+URL: /api/members/login  
+설명: 로그인 및 회원 정보 조회
+
+Request Body  
+[묶음]
+loginId: String  
+password: String
+
+Response  
+[묶음]
+id: Long  
+loginId: String  
+nickname: String
+
+
+---
+
+### 🃏 Card API
+
+#### 3️⃣ 카드 등록
+
+Method: POST  
+URL: /api/cards  
+설명: 카드 생성 및 저장
+
+Request Body  
+```
+memberId: Long  
+yugiohTemplate: String  
+yugiohElement: String  
+name: String  
+artwork: String (Base64 이미지 문자열)  
+yugiohLevel: int  
+yugiohEffect: String  
+yugiohEdition: String  
+yugiohCardNumber: String  
+yugiohCardType: String  
+yugiohAttack: int  
+yugiohDefense: int  
+yugiohIdentifier: String  
+yugiohCopyright: String
+```
+
+Response  
+```
+id: Long  
+memberId: Long  
+memberNickname: String  
+name: String  
+artwork: String  
+cardType: String  
+attack: int  
+defense: int
+```
+
+
+#### 4️⃣ 전체 카드 조회
+
+Method: GET  
+URL: /api/cards  
+설명: 전체 카드 목록 조회
+
+Response  
+```
+CardResponse 리스트 형태  
+각 요소는 다음 정보를 포함  
+- id  
+- memberId  
+- memberNickname  
+- name  
+- artwork  
+- cardType  
+- attack  
+- defense
+```
+
+
+#### 5️⃣ 내 카드 조회 (회원 기준)
+
+Method: GET  
+URL: /api/cards/my?loginId={loginId}  
+설명: 로그인한 회원의 카드만 조회
+
+Query Parameter  
+- loginId : 회원 로그인 ID
+
+Response  
+```
+해당 회원이 생성한 CardResponse 리스트
+```
+
+
+#### 6️⃣ 카드 상세 조회
+
+Method: GET  
+URL: /api/cards/{id}  
+설명: 카드 단건 조회
+
+Response  
+```
+id: Long  
+memberId: Long  
+memberNickname: String  
+name: String  
+artwork: String  
+cardType: String  
+attack: int  
+defense: int
+```
+
+
+#### 7️⃣ 카드 삭제
+
+Method: DELETE  
+URL: /api/cards/{id}  
+설명: 카드 삭제
+
+Response  
+- 성공 시 응답 없음
+
+
+---
+
+## 📌 API 설계 특징 요약
+
+- RESTful URL 구조 사용
+- HTTP Method 의미에 맞게 API 설계
+- Entity 직접 노출 ❌ → DTO 기반 응답
+- Member–Card 연관관계 기반 API 제공
+- React 프론트엔드에서 바로 사용 가능한 응답 구조
+- Base64 이미지 문자열을 포함한 카드 데이터 처리
+
 
 
 ✨ 특징 요약
