@@ -5,7 +5,6 @@ import lombok.Getter;
 @Getter
 public class CardRequest {
 
-    // 🔑 로그인 유저 PK
     private Long memberId;
 
     private String yugiohTemplate;

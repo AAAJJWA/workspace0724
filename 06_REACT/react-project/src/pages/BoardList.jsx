@@ -63,7 +63,7 @@ const BoardList = () => {
           {savedCards.map((card) => (
             <CardItem
               key={card.id}
-              onClick={() => navigate(`/cards/${card.id}`)}
+              onClick={() => navigate(`/detail/${card.id}`)}
             >
               <CardThumb src={card.artwork} alt="card thumbnail" />
               <CardInfo>
